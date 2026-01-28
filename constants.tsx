@@ -66,22 +66,47 @@ export const FAQ_ITEMS: FAQItem[] = [
   {
     category: 'General',
     question: "What makes MADSAG different from a traditional digital agency?",
-    answer: "We are an engineering-first group. While typical agencies focus purely on aesthetics, we treat your digital presence as high-performance architecture. We prioritize sub-second load times, psychological conversion triggers, and deep data attribution."
+    answer: "We are an engineering-first group. While typical agencies focus purely on aesthetics, we treat your digital presence as high-performance architecture. We prioritize sub-second load times, psychological conversion triggers, and deep data attribution over generic designs."
   },
   {
     category: ServiceType.WEBSITE_DESIGN,
     question: "Do you use templates like Elementor or Divi?",
-    answer: "Never. We build bespoke Next.js and React environments. Off-the-shelf builders introduce bloat that kills page speed and SEO. Our architecture is hand-coded for maximum performance."
+    answer: "Never. We build bespoke Next.js and React environments. Off-the-shelf builders introduce bloat that kills page speed and SEO. Our architecture is hand-coded for maximum performance and security."
   },
   {
     category: ServiceType.WEBSITE_DESIGN,
     question: "Will my site be SEO-optimized out of the box?",
-    answer: "Absolutely. We follow a 'Technical SEO First' protocol. This includes semantic HTML5, automated image compression, schema markup, and ensuring we hit 95+ scores on Google PageSpeed Insights."
+    answer: "Absolutely. We follow a Technical SEO First protocol. This includes semantic HTML5, automated image compression, schema markup, and ensuring we hit 95+ scores on Google PageSpeed Insights before handover."
   },
   {
     category: ServiceType.PERFORMANCE_MARKETING,
     question: "What is the minimum ad budget you work with?",
-    answer: "For our Performance unit to effectively run creative testing, we typically recommend a minimum starting budget of $2,500/month."
+    answer: "For our Performance unit to effectively run high-frequency creative testing, we typically recommend a minimum starting budget of $2,500/month. This allows the algorithms enough data to exit the learning phase quickly."
+  },
+  {
+    category: ServiceType.PERFORMANCE_MARKETING,
+    question: "How do you handle iOS tracking issues?",
+    answer: "We deploy the Meta Conversions API (CAPI) on a server-side level for every client. By sending first-party data directly from your server to the platform, we bypass browser limitations and restore attribution accuracy."
+  },
+  {
+    category: ServiceType.SHOPIFY,
+    question: "Can you migrate my data from WooCommerce or Magento?",
+    answer: "Yes. Our migration protocol handles customer history, product variants, and SEO redirection maps to ensure zero ranking loss during the transition to the Shopify ecosystem."
+  },
+  {
+    category: ServiceType.SHOPIFY,
+    question: "Do you use pre-built Shopify themes?",
+    answer: "No. We develop custom Liquid schemas or Headless Hydrogen environments. This ensures your store is unique, extremely fast, and completely manageable without the performance penalties of bloated multi-purpose themes."
+  },
+  {
+    category: ServiceType.LANDING_PAGE,
+    question: "Do you handle the copywriting for the funnels?",
+    answer: "Yes. Our direct-response copywriters engineer headlines and body copy based on your specific customer avatars. We focus on clarity, authority, and removing friction between the click and the conversion."
+  },
+  {
+    category: ServiceType.LANDING_PAGE,
+    question: "How fast do your landing pages load?",
+    answer: "Our target is always sub-800ms for the Largest Contentful Paint (LCP). We achieve this through aggressive asset optimization, edge delivery, and removing unnecessary third-party scripts that slow down the user experience."
   }
 ];
 
