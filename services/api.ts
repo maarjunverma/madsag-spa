@@ -5,35 +5,37 @@ import { QuoteFormData } from '../types';
 /**
  * MADSAG STRATEGIC API SERVICE
  * 
- * Handles cross-origin POST requests to the Strapi CMS.
- * Payload is strictly mapped to the Strapi 'Lead' collection schema.
+ * Optimized for Strapi v4/v5 compatibility.
+ * Handles strict field mapping and deep error diagnostics.
  */
 export const apiService = {
   /**
    * Submits a lead to the Strapi 'Leads' collection.
    * Path: /api/leads
-   * 
-   * @param formData The data from the QuoteModal
    */
   submitLead: async (formData: QuoteFormData) => {
-    // Exact endpoint from Strapi route configuration
     const endpoint = `${STRAPI_URL}/api/leads`;
     
-    // STRICT KEY MATCHING (Case-Sensitive as per Strapi Content-Type)
-    // We EXCLUDE keys not defined in your Strapi Lead schema (e.g., source, submittedAt, whatsappApproval)
-    const payload = {
-      data: {
-        FullName: formData.FullName,
-        Mobile_number: formData.Mobile_number,
-        Email: formData.Email,
-        Inquiry_subject: formData.Inquiry_subject,
-        url: formData.url || '',
-        Message: formData.Message
-      }
+    // Construct base data object
+    const data: Record<string, string> = {
+      FullName: formData.FullName.trim(),
+      Mobile_number: formData.Mobile_number.trim(),
+      Email: formData.Email.trim(),
+      Inquiry_subject: formData.Inquiry_subject.trim(),
+      Message: formData.Message.trim()
     };
 
+    // ONLY add 'url' if it actually has a value to prevent validation errors on empty strings
+    if (formData.url && formData.url.trim().length > 0) {
+      data.url = formData.url.trim();
+    }
+
+    const payload = { data };
+
     try {
-      console.log('Deploying lead to:', endpoint, 'with payload:', payload);
+      console.log('--- API TRANSMISSION START ---');
+      console.log('Target:', endpoint);
+      console.log('Payload:', payload);
       
       const response = await fetch(endpoint, {
         method: 'POST',
@@ -44,32 +46,49 @@ export const apiService = {
         body: JSON.stringify(payload),
       });
 
-      if (!response.ok) {
-        let errorMessage = `API Error: ${response.status}`;
-        try {
-          const errorJson = await response.json();
-          // Extract Strapi-specific validation messages
-          errorMessage = errorJson?.error?.message || errorMessage;
-          if (errorJson?.error?.details?.errors) {
-            const details = errorJson.error.details.errors.map((e: any) => e.message).join(', ');
-            errorMessage += ` (${details})`;
-          }
-        } catch (e) {
-          // Fallback if response isn't JSON
-        }
-        
-        if (response.status === 403) {
-          throw new Error('ACCESS_FORBIDDEN: Please verify that "create" permission is enabled for the Public role in Strapi.');
-        }
-        
-        throw new Error(errorMessage);
+      // Handle successful response
+      if (response.ok) {
+        const result = await response.json();
+        console.log('Transmission Successful:', result);
+        return result;
       }
 
-      return await response.json();
+      // Handle Errors (4xx, 5xx)
+      let errorMessage = `Server responded with ${response.status}`;
+      try {
+        const errorData = await response.json();
+        console.error('Server Error Detail:', errorData);
+        
+        // Strapi error format parsing
+        if (errorData?.error?.message) {
+          errorMessage = errorData.error.message;
+          if (errorData.error.details?.errors) {
+            const specifics = errorData.error.details.errors
+              .map((e: any) => `${e.path}: ${e.message}`)
+              .join(', ');
+            errorMessage += ` (${specifics})`;
+          }
+        }
+      } catch (parseError) {
+        console.error('Could not parse error response body');
+      }
+
+      if (response.status === 500) {
+        throw new Error(`INTERNAL_SERVER_ERROR (500): The backend crashed. This usually means a field type mismatch (e.g. sending text to a number field) or a database constraint. Check Strapi logs.`);
+      }
+
+      if (response.status === 403) {
+        throw new Error('FORBIDDEN (403): Check Public Role permissions for "Lead" create action.');
+      }
+
+      throw new Error(errorMessage);
+
     } catch (error: any) {
-      console.error('Transmission Failure:', error);
+      console.error('--- API TRANSMISSION FAILED ---');
+      console.error(error);
+      
       if (error instanceof TypeError && error.message.includes('fetch')) {
-        throw new Error('NETWORK_ERROR: Unable to connect to the API server. Check CORS settings or URL.');
+        throw new Error('NETWORK_FAILURE: The API server is unreachable or CORS is blocking the request.');
       }
       throw error;
     }
