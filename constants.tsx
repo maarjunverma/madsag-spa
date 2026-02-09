@@ -6,10 +6,8 @@ export const WHATSAPP_PHONE = "919876543210";
 export const BRAND_NAME = "MADSAG";
 export const SLOGAN = "ENGINEERING MARKET DOMINANCE";
 
-// UPDATED FOR PRODUCTION: Replace this with your actual VPS IP or domain in CloudPanel
-export const STRAPI_URL = window.location.hostname === 'localhost' 
-  ? "http://localhost:1337" 
-  : "https://api.yourdomain.com"; // Update this to your CloudPanel API site URL
+// PRODUCTION API ENDPOINT
+export const STRAPI_URL = "https://api.madsag.in";
 
 export const SYSTEM_ARCH_DOCS = `
 [MADSAG CORE ARCHITECTURE BRIEF]
