@@ -40,16 +40,40 @@ const App: React.FC = () => {
     setSelectedServiceType(service);
     setSelectedPlan(plan);
     setIsQuoteModalOpen(true);
+    document.body.style.overflow = 'hidden';
+  };
+
+  const closeQuoteModal = () => {
+    setIsQuoteModalOpen(false);
+    if (!activeDetailService && !isPortfolioOpen && !isBlogModalOpen) {
+      document.body.style.overflow = 'auto';
+    }
   };
 
   const openPortfolio = (item: PortfolioItem) => {
     setSelectedPortfolioItem(item);
     setIsPortfolioOpen(true);
+    document.body.style.overflow = 'hidden';
+  };
+
+  const closePortfolio = () => {
+    setIsPortfolioOpen(false);
+    if (!activeDetailService && !isQuoteModalOpen && !isBlogModalOpen) {
+      document.body.style.overflow = 'auto';
+    }
   };
 
   const openBlog = (post: BlogPost) => {
     setSelectedBlogPost(post);
     setIsBlogModalOpen(true);
+    document.body.style.overflow = 'hidden';
+  };
+
+  const closeBlog = () => {
+    setIsBlogModalOpen(false);
+    if (!activeDetailService && !isQuoteModalOpen && !isPortfolioOpen) {
+      document.body.style.overflow = 'auto';
+    }
   };
 
   const openServiceDetails = (service: Service) => {
@@ -59,13 +83,15 @@ const App: React.FC = () => {
 
   const closeServiceDetails = () => {
     setActiveDetailService(null);
-    document.body.style.overflow = 'auto';
+    if (!isQuoteModalOpen && !isPortfolioOpen && !isBlogModalOpen) {
+      document.body.style.overflow = 'auto';
+    }
   };
 
   const isAnyModalOpen = isPortfolioOpen || isQuoteModalOpen || isBlogModalOpen || !!activeDetailService;
 
   return (
-    <div className={`relative overflow-x-hidden ${isAnyModalOpen ? 'h-screen overflow-hidden' : ''}`}>
+    <div className={`relative bg-[#030712] transition-all duration-700 ${isAnyModalOpen ? 'h-screen overflow-hidden px-1' : ''}`}>
       {/* Background Decor */}
       <div className="fixed top-0 left-0 w-full h-full pointer-events-none -z-10">
         <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-amber-600/5 blur-[150px] rounded-full"></div>
@@ -74,7 +100,7 @@ const App: React.FC = () => {
 
       <Navbar onGetQuote={() => openQuoteModal()} activeSectionId={activeSectionId} />
       
-      <main>
+      <main className="relative z-10">
         <Hero onGetQuote={() => openQuoteModal()} />
         
         <div id="services-container">
@@ -98,12 +124,12 @@ const App: React.FC = () => {
         <CTASection />
       </main>
 
-      <footer className="py-20 px-6 border-t border-white/5 glass relative overflow-hidden text-center md:text-left">
+      <footer className="py-20 px-6 border-t border-white/5 glass relative overflow-hidden">
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center md:items-start gap-12 relative z-10">
           <div className="space-y-4 flex flex-col items-center md:items-start">
             <div className="flex items-center gap-3">
               <div className="w-8 h-8 bg-amber-500 rounded-lg flex items-center justify-center font-black text-white">M</div>
-              <span className="font-black text-3xl tracking-tighter uppercase text-white">{BRAND_NAME}</span>
+              <span className="font-black text-3xl tracking-tighter uppercase text-white leading-none">{BRAND_NAME}</span>
             </div>
             <p className="text-amber-500 font-black text-[10px] uppercase tracking-[0.3em]">{SLOGAN}</p>
           </div>
@@ -111,25 +137,26 @@ const App: React.FC = () => {
           <div className="grid grid-cols-2 md:grid-cols-2 gap-12 w-full md:w-auto">
              <div className="space-y-4">
                <h4 className="text-white font-black text-xs uppercase tracking-widest text-center md:text-left">Navigation</h4>
-               <ul className="space-y-2 text-sm text-gray-500 font-bold">
+               <ul className="space-y-2 text-sm text-gray-500 font-bold text-center md:text-left">
                  <li><a href="#hero" className="hover:text-amber-400 transition-colors">Home</a></li>
-                 <li><a href="#process" className="hover:text-amber-400 transition-colors">About</a></li>
+                 <li><a href="#portfolio" className="hover:text-amber-400 transition-colors">Portfolio</a></li>
+                 <li><a href="#process" className="hover:text-amber-400 transition-colors">Strategy</a></li>
                  <li><a href="#blog" className="hover:text-amber-400 transition-colors">Journal</a></li>
                </ul>
              </div>
              <div className="space-y-4">
                <h4 className="text-white font-black text-xs uppercase tracking-widest text-center md:text-left">Social</h4>
-               <div className="flex gap-4">
-                 <a href="#" className="w-10 h-10 glass rounded-full flex items-center justify-center hover:text-amber-400 transition-all text-white"><i className="fa-brands fa-linkedin-in text-lg"></i></a>
-                 <a href="#" className="w-10 h-10 glass rounded-full flex items-center justify-center hover:text-amber-400 transition-all text-white"><i className="fa-brands fa-instagram text-lg"></i></a>
+               <div className="flex gap-4 justify-center md:justify-start">
+                 <a href="#" className="w-10 h-10 glass rounded-full flex items-center justify-center hover:bg-white/10 transition-all text-white"><i className="fa-brands fa-linkedin-in text-lg"></i></a>
+                 <a href="#" className="w-10 h-10 glass rounded-full flex items-center justify-center hover:bg-white/10 transition-all text-white"><i className="fa-brands fa-instagram text-lg"></i></a>
                </div>
              </div>
           </div>
         </div>
 
-        <div className="max-w-6xl mx-auto mt-16 pt-8 border-t border-white/5 flex flex-col sm:flex-row justify-between items-center gap-4 text-[10px] font-bold text-gray-600 uppercase tracking-widest">
+        <div className="max-w-6xl mx-auto mt-16 pt-8 border-t border-white/5 flex flex-col sm:flex-row justify-between items-center gap-4 text-[10px] font-bold text-gray-600 uppercase tracking-widest text-center sm:text-left">
           <p>&copy; {new Date().getFullYear()} {BRAND_NAME} STRATEGY GROUP.</p>
-          <p>Global Digital Infrastructure</p>
+          <p>Global Digital Infrastructure v1.0</p>
         </div>
       </footer>
 
@@ -137,7 +164,7 @@ const App: React.FC = () => {
       
       <QuoteModal 
         isOpen={isQuoteModalOpen} 
-        onClose={() => setIsQuoteModalOpen(false)} 
+        onClose={closeQuoteModal} 
         preselectedService={selectedServiceType}
         preselectedPlan={selectedPlan}
       />
@@ -145,13 +172,13 @@ const App: React.FC = () => {
       <PortfolioModal 
         isOpen={isPortfolioOpen}
         item={selectedPortfolioItem}
-        onClose={() => setIsPortfolioOpen(false)}
+        onClose={closePortfolio}
       />
 
       <BlogModal 
         isOpen={isBlogModalOpen}
         post={selectedBlogPost}
-        onClose={() => setIsBlogModalOpen(false)}
+        onClose={closeBlog}
       />
 
       {activeDetailService && (

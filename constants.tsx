@@ -6,13 +6,15 @@ export const WHATSAPP_PHONE = "919876543210";
 export const BRAND_NAME = "MADSAG";
 export const SLOGAN = "ENGINEERING MARKET DOMINANCE";
 
-export const STRAPI_URL = "http://localhost:1337"; 
+// UPDATED FOR PRODUCTION: Replace this with your actual VPS IP or domain in CloudPanel
+export const STRAPI_URL = window.location.hostname === 'localhost' 
+  ? "http://localhost:1337" 
+  : "https://api.yourdomain.com"; // Update this to your CloudPanel API site URL
 
-// Added SYSTEM_ARCH_DOCS to resolve the missing export error in ArchitectureDocs.tsx
 export const SYSTEM_ARCH_DOCS = `
 [MADSAG CORE ARCHITECTURE BRIEF]
 --------------------------------
-FRAMEWORK: React 18+ High-Performance Build
+FRAMEWORK: React 19 High-Performance Build
 STYLING: Tailwind CSS (Precision Utility Engine)
 API INTERFACE: RESTful Protocol via Strapi CMS
 ASSET DELIVERY: Optimized CDN Edge Computing
