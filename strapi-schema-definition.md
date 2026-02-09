@@ -29,7 +29,6 @@
 | Inquiry_subject | String | Mandatory |
 | url | String | Optional |
 | Message | Text | Mandatory (Long text) |
-| source | String | Origin domain |
 
 ## 4. API Permissions Configuration (CRITICAL)
 To fix "Forbidden" errors, ensure these are set:
@@ -44,3 +43,4 @@ To fix "Forbidden" errors, ensure these are set:
 ## 5. Troubleshooting
 - **Forbidden (403)**: Missing 'create' permission in Public Role.
 - **Bad Request (400)**: Field name mismatch. Ensure Strapi field names match exactly: `FullName`, `Mobile_number`, etc.
+- **Invalid Key**: Ensure no extra fields like `submittedAt` or `source` are sent if they aren't in your collection.
