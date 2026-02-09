@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { QuoteFormData } from '../types';
+import { QuoteFormData, ServiceType } from '../types';
 import { apiService } from '../services/api';
 
 interface QuoteModalProps {
@@ -11,11 +11,13 @@ interface QuoteModalProps {
 }
 
 const QuoteModal: React.FC<QuoteModalProps> = ({ isOpen, onClose, preselectedService, preselectedPlan }) => {
+  const serviceOptions = Object.values(ServiceType);
+  
   const [formData, setFormData] = useState<QuoteFormData>({
     FullName: '',
     Mobile_number: '',
     Email: '',
-    Inquiry_subject: preselectedService || '',
+    Inquiry_subject: preselectedService || serviceOptions[0],
     url: '',
     Message: '',
     whatsappApproval: true
@@ -32,7 +34,7 @@ const QuoteModal: React.FC<QuoteModalProps> = ({ isOpen, onClose, preselectedSer
         Inquiry_subject: preselectedService + (preselectedPlan ? ` - ${preselectedPlan}` : '')
       }));
     }
-  }, [preselectedService, preselectedPlan]);
+  }, [preselectedService, preselectedPlan, isOpen]);
 
   if (!isOpen) return null;
 
@@ -62,7 +64,7 @@ const QuoteModal: React.FC<QuoteModalProps> = ({ isOpen, onClose, preselectedSer
 
   const labelStyle = "block text-sm font-semibold text-gray-200 mb-2";
   const asteriskStyle = "text-red-500 ml-0.5";
-  const inputStyle = "w-full bg-[#1e1e2e]/50 border border-white/10 rounded-lg px-4 py-3 focus:outline-none focus:border-amber-500 transition-all text-white placeholder-gray-600 shadow-inner";
+  const inputStyle = "w-full bg-[#1e1e2e]/80 border border-white/10 rounded-lg px-4 py-3 focus:outline-none focus:border-amber-500 transition-all text-white placeholder-gray-600 shadow-inner appearance-none";
 
   return (
     <div className="fixed inset-0 z-[160] flex items-center justify-center p-4">
@@ -129,16 +131,25 @@ const QuoteModal: React.FC<QuoteModalProps> = ({ isOpen, onClose, preselectedSer
                     onChange={e => setFormData({...formData, Email: e.target.value})}
                   />
                 </div>
-                <div className="space-y-1">
+                <div className="space-y-1 relative">
                   <label className={labelStyle}>Inquiry_subject<span className={asteriskStyle}>*</span></label>
-                  <input 
-                    required
-                    disabled={isSubmitting}
-                    type="text"
-                    className={inputStyle}
-                    value={formData.Inquiry_subject}
-                    onChange={e => setFormData({...formData, Inquiry_subject: e.target.value})}
-                  />
+                  <div className="relative">
+                    <select 
+                      required
+                      disabled={isSubmitting}
+                      className={inputStyle}
+                      value={formData.Inquiry_subject}
+                      onChange={e => setFormData({...formData, Inquiry_subject: e.target.value})}
+                    >
+                      {serviceOptions.map(option => (
+                        <option key={option} value={option} className="bg-[#11111d]">{option}</option>
+                      ))}
+                      <option value="Other / General Inquiry" className="bg-[#11111d]">Other / General Inquiry</option>
+                    </select>
+                    <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-gray-500">
+                      <i className="fa-solid fa-chevron-down text-xs"></i>
+                    </div>
+                  </div>
                 </div>
 
                 {/* Row 3 */}
@@ -147,6 +158,7 @@ const QuoteModal: React.FC<QuoteModalProps> = ({ isOpen, onClose, preselectedSer
                   <input 
                     disabled={isSubmitting}
                     type="text"
+                    placeholder="https://example.com"
                     className={inputStyle}
                     value={formData.url}
                     onChange={e => setFormData({...formData, url: e.target.value})}
@@ -158,11 +170,11 @@ const QuoteModal: React.FC<QuoteModalProps> = ({ isOpen, onClose, preselectedSer
                     required
                     disabled={isSubmitting}
                     rows={4}
-                    className={`${inputStyle} min-h-[120px]`}
+                    className={`${inputStyle} min-h-[120px] scroll-none`}
                     value={formData.Message}
                     onChange={e => setFormData({...formData, Message: e.target.value})}
                   />
-                  <p className="text-gray-500 text-[11px] mt-1">min. 15 characters</p>
+                  <p className="text-gray-500 text-[11px] mt-1 font-medium">min. 15 characters</p>
                 </div>
               </div>
 
@@ -178,11 +190,11 @@ const QuoteModal: React.FC<QuoteModalProps> = ({ isOpen, onClose, preselectedSer
                    <input 
                     type="checkbox" 
                     id="wa-approval"
-                    className="w-4 h-4 rounded border-gray-600 text-amber-500 focus:ring-amber-500 bg-black"
+                    className="w-4 h-4 rounded border-gray-600 text-amber-500 focus:ring-amber-500 bg-black cursor-pointer"
                     checked={formData.whatsappApproval}
                     onChange={e => setFormData({...formData, whatsappApproval: e.target.checked})}
                   />
-                  <label htmlFor="wa-approval" className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">
+                  <label htmlFor="wa-approval" className="text-[10px] font-bold text-gray-500 uppercase tracking-widest cursor-pointer select-none">
                     Authorize Secure WhatsApp Communication
                   </label>
                 </div>
@@ -193,9 +205,9 @@ const QuoteModal: React.FC<QuoteModalProps> = ({ isOpen, onClose, preselectedSer
                   className="w-full sm:w-auto px-12 py-4 bg-gradient-to-r from-amber-600 to-yellow-800 hover:from-amber-500 hover:to-yellow-700 disabled:opacity-50 text-white font-black rounded-lg transition-all shadow-xl shadow-amber-500/20 flex items-center justify-center gap-3 text-xs uppercase tracking-[0.2em]"
                 >
                   {isSubmitting ? (
-                    <><i className="fa-solid fa-circle-notch animate-spin"></i> Submitting...</>
+                    <><i className="fa-solid fa-circle-notch animate-spin"></i> Processing...</>
                   ) : (
-                    <><i className="fa-solid fa-paper-plane"></i> Submit Brief</>
+                    <><i className="fa-solid fa-paper-plane"></i> Submit Inquiry</>
                   )}
                 </button>
               </div>
