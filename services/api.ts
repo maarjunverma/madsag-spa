@@ -5,8 +5,8 @@ import { QuoteFormData } from '../types';
 /**
  * MADSAG STRATEGIC API SERVICE
  * 
- * Handles cross-origin POST requests to the Strapi CMS with the precise 
- * key names requested in the lead data layout.
+ * Handles cross-origin POST requests to the Strapi CMS.
+ * Optimized to strictly match the Strapi collection schema.
  */
 export const apiService = {
   /**
@@ -17,6 +17,8 @@ export const apiService = {
   submitLead: async (formData: QuoteFormData) => {
     const endpoint = `${STRAPI_URL}/api/leads`;
     
+    // We remove 'submittedAt' because Strapi generates 'createdAt' automatically.
+    // Including undefined keys causes a 400 Bad Request or validation error.
     const payload = {
       data: {
         FullName: formData.FullName,
@@ -25,12 +27,13 @@ export const apiService = {
         Inquiry_subject: formData.Inquiry_subject,
         url: formData.url,
         Message: formData.Message,
-        submittedAt: new Date().toISOString(),
         source: typeof window !== 'undefined' ? window.location.hostname : 'madsag.in'
       }
     };
 
     try {
+      console.log('Transmitting lead payload to:', endpoint);
+      
       const response = await fetch(endpoint, {
         method: 'POST',
         headers: {
@@ -41,10 +44,20 @@ export const apiService = {
       });
 
       if (!response.ok) {
-        let errorMessage = `Server responded with ${response.status}`;
+        if (response.status === 403) {
+          throw new Error('ACCESS_FORBIDDEN: Please enable "create" permission for the Public Role in Strapi Settings.');
+        }
+        
+        let errorMessage = `Server Error: ${response.status}`;
         try {
           const errorJson = await response.json();
+          // If Strapi returns a validation error, it usually contains details about which key is invalid
           errorMessage = errorJson?.error?.message || errorMessage;
+          if (errorJson?.error?.details?.errors) {
+            const details = errorJson.error.details.errors.map((e: any) => e.message).join(', ');
+            errorMessage = `${errorMessage} (${details})`;
+          }
+          console.error('Strapi Detailed Error:', errorJson);
         } catch (e) {}
         throw new Error(errorMessage);
       }
@@ -52,7 +65,7 @@ export const apiService = {
       return await response.json();
     } catch (error: any) {
       if (error instanceof TypeError && error.message.includes('fetch')) {
-        throw new Error('Network Error: Please check your internet or API CORS settings.');
+        throw new Error('NETWORK_FAILURE: The API server is unreachable or CORS is blocking the request.');
       }
       throw error;
     }

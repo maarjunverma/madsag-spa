@@ -20,28 +20,27 @@
 | order | Integer | Used for sorting on frontend |
 | gradient | String | Tailwind gradient classes |
 
-## 3. ProcessStep (Collection Type)
+## 3. Lead (Collection Type)
 | Field | Type | Description |
 |---|---|---|
-| title | String | Step heading |
-| description | Text | Step body text |
-| icon | String | FontAwesome class name |
-| order | Integer | Sorting |
+| FullName | String | Mandatory |
+| Mobile_number | String | Mandatory |
+| Email | String | Mandatory |
+| Inquiry_subject | String | Mandatory |
+| url | String | Optional |
+| Message | Text | Mandatory (Long text) |
+| source | String | Origin domain |
 
-## 4. API Permissions Configuration
+## 4. API Permissions Configuration (CRITICAL)
+To fix "Forbidden" errors, ensure these are set:
 1. Navigate to **Settings** > **Users & Permissions Plugin** > **Roles**.
 2. Select the **Public** role.
 3. Check the following permissions:
-   - **Hero**: `find`
-   - **Service**: `find`, `findOne`
+   - **Lead**: **`create`** (This allows the form to submit data)
+   - **Service**: `find`, `findOne` (Allows the site to load services)
    - **Process-Step**: `find`
 4. Save the changes.
 
-## 5. Example Frontend Fetch Logic
-```typescript
-const fetchServices = async () => {
-  const response = await fetch(`${STRAPI_URL}/api/services?populate=*&sort=order:asc`);
-  const { data } = await response.json();
-  return data;
-};
-```
+## 5. Troubleshooting
+- **Forbidden (403)**: Missing 'create' permission in Public Role.
+- **Bad Request (400)**: Field name mismatch. Ensure Strapi field names match exactly: `FullName`, `Mobile_number`, etc.
