@@ -76,19 +76,11 @@ export interface ProcessStep {
 }
 
 export interface QuoteFormData {
-  fullName: string;
-  email: string;
-  mobileNumber: string;
-  whatsappApproval: boolean;
-  service: ServiceType | '';
-  projectDescription: string;
-  websiteUrl?: string;
-  budget?: string;
-  timeline?: string;
-  dailyBudget?: string;
-  adsExperience?: 'fresh' | 'previously_run' | 'never';
-  entityType?: 'business' | 'agency';
-  isNewBusiness?: 'yes' | 'no';
-  projectPurpose?: string;
-  selectedPlan?: string;
+  FullName: string;
+  Mobile_number: string;
+  Email: string;
+  Inquiry_subject: string;
+  url: string;
+  Message: string;
+  whatsappApproval?: boolean; // Optional metadata
 }

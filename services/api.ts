@@ -5,48 +5,55 @@ import { QuoteFormData } from '../types';
 /**
  * MADSAG STRATEGIC API SERVICE
  * 
- * Handles all outgoing requests to the Strapi CMS backend.
- * Strapi requires payloads to be wrapped in a "data" object for collection types.
+ * Handles cross-origin POST requests to the Strapi CMS with the precise 
+ * key names requested in the lead data layout.
  */
 export const apiService = {
   /**
-   * Submits a project brief to the Strapi 'Leads' collection.
+   * Submits a lead to the Strapi 'Leads' collection.
    * 
-   * @param formData The raw form data from QuoteModal
-   * @returns Promise containing the Strapi response
+   * @param formData The data mapping from the UI layout
    */
   submitLead: async (formData: QuoteFormData) => {
-    try {
-      // 1. Prepare the payload as per Strapi v4/v5 specifications
-      const payload = {
-        data: {
-          ...formData,
-          // You can add metadata here
-          submittedAt: new Date().toISOString(),
-          source: 'Website_Main_Modal'
-        }
-      };
+    const endpoint = `${STRAPI_URL}/api/leads`;
+    
+    const payload = {
+      data: {
+        FullName: formData.FullName,
+        Mobile_number: formData.Mobile_number,
+        Email: formData.Email,
+        Inquiry_subject: formData.Inquiry_subject,
+        url: formData.url,
+        Message: formData.Message,
+        submittedAt: new Date().toISOString(),
+        source: typeof window !== 'undefined' ? window.location.hostname : 'madsag.in'
+      }
+    };
 
-      // 2. Execute the POST request
-      const response = await fetch(`${STRAPI_URL}/api/leads`, {
+    try {
+      const response = await fetch(endpoint, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          // If you use an API Token (recommended), add it here:
-          // 'Authorization': `Bearer ${process.env.STRAPI_API_TOKEN}`
+          'Accept': 'application/json',
         },
         body: JSON.stringify(payload),
       });
 
-      // 3. Handle potential error codes (4xx, 5xx)
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData?.error?.message || 'Strategic deployment failed at API level.');
+        let errorMessage = `Server responded with ${response.status}`;
+        try {
+          const errorJson = await response.json();
+          errorMessage = errorJson?.error?.message || errorMessage;
+        } catch (e) {}
+        throw new Error(errorMessage);
       }
 
       return await response.json();
-    } catch (error) {
-      console.error('API_SUBMISSION_ERROR:', error);
+    } catch (error: any) {
+      if (error instanceof TypeError && error.message.includes('fetch')) {
+        throw new Error('Network Error: Please check your internet or API CORS settings.');
+      }
       throw error;
     }
   }
