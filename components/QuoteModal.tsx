@@ -36,6 +36,7 @@ const QuoteModal: React.FC<QuoteModalProps> = ({ isOpen, onClose, preselectedSer
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
+    // CRITICAL: Ensure 'name' matches the key in formData state
     setFormData((prev) => ({
       ...prev,
       [name]: value,
@@ -46,26 +47,15 @@ const QuoteModal: React.FC<QuoteModalProps> = ({ isOpen, onClose, preselectedSer
     e.preventDefault();
     setStatus({ loading: true, error: null, success: false });
 
-    // CRITICAL: Mapped to the EXACT Strapi API IDs from the provided screenshot
-    const strapiPayload: QuoteFormData = {
-     fullname: formData.fullname,       // Maps frontend 'name' to Strapi 'FullName'
-      email: formData.email,         // Maps to Strapi 'email'
-      phone: formData.phone,         // Maps to Strapi 'phone'
-      projectType: formData.projectType, // Maps to Strapi 'projectType'
-      budget: formData.budget,       // Maps to Strapi 'budget'
-      description: formData.description, // Maps to Strapi 'description'
-      url: formData.url              // Maps to Strapi 'url'
-    };
-
     try {
-      await apiService.submitLead(strapiPayload);
+      await apiService.submitLead(formData);
       setStatus({ loading: false, error: null, success: true });
       
       setTimeout(() => {
         setStatus(s => ({ ...s, success: false }));
         onClose();
         setFormData({
-         fullname: '',
+          fullname: '',
           email: '',
           phone: '',
           projectType: 'website-development',
@@ -75,7 +65,6 @@ const QuoteModal: React.FC<QuoteModalProps> = ({ isOpen, onClose, preselectedSer
         });
       }, 3000);
     } catch (error: any) {
-      console.error("API Transmission Failed:", error);
       setStatus({ loading: false, error: error.message || "Failed to send request.", success: false });
     }
   };
@@ -145,11 +134,11 @@ const QuoteModal: React.FC<QuoteModalProps> = ({ isOpen, onClose, preselectedSer
                   <div className="flex-1 space-y-6">
                     <div className="grid md:grid-cols-2 gap-6">
                       <div className="space-y-1">
-                        <label className={labelStyle} htmlFor="name">Your Name</label>
+                        <label className={labelStyle} htmlFor="fullname">Your Name</label>
                         <input
                           type="text"
-                          id="name"
-                          name="name"
+                          id="fullname"
+                          name="fullname"
                           value={formData.fullname}
                           onChange={handleChange}
                           required
@@ -190,10 +179,10 @@ const QuoteModal: React.FC<QuoteModalProps> = ({ isOpen, onClose, preselectedSer
                         />
                       </div>
                       <div className="space-y-1 relative">
-                        <label className={labelStyle} htmlFor="project-type">Project Type</label>
+                        <label className={labelStyle} htmlFor="projectType">Project Type</label>
                         <div className="relative">
                           <select
-                            id="project-type"
+                            id="projectType"
                             name="projectType"
                             value={formData.projectType}
                             onChange={handleChange}
@@ -233,9 +222,10 @@ const QuoteModal: React.FC<QuoteModalProps> = ({ isOpen, onClose, preselectedSer
                         </div>
                       </div>
                       <div className="space-y-1">
-                        <label className={labelStyle}>Website URL (Optional)</label>
+                        <label className={labelStyle} htmlFor="url">Website URL (Optional)</label>
                         <input
                           type="text"
+                          id="url"
                           name="url"
                           value={formData.url}
                           onChange={handleChange}

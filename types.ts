@@ -77,14 +77,14 @@ export interface ProcessStep {
 
 /**
  * STRAPI SCHEMA MAPPING - STRICT ALIGNMENT
- * Updated based on the provided Strapi screenshot to match API IDs exactly.
+ * Updated to use 'fullname' as per user requirement to match backend.
  */
 export interface QuoteFormData {
-  fullname: string;   // Matches "FullName" in image
-  email: string;      // Matches "email" in image
-  phone: string;      // Matches "phone" in image (Note: Strapi Number type requires numeric string or number)
-  projectType: string; // Matches "projectType" in image
-  budget: string;      // Matches "budget" in image
-  description: string; // Matches "description" in image
-  url?: string;        // Matches "url" in image
+  fullname: string;   
+  email: string;      
+  phone: string;      
+  projectType: string; 
+  budget: string;      
+  description: string; 
+  url?: string;        
 }
