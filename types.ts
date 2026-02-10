@@ -76,8 +76,8 @@ export interface ProcessStep {
 }
 
 /**
- * STRAPI SCHEMA MAPPING - STRICT ALIGNMENT
- * Updated to use 'fullname' as per user requirement to match backend.
+ * STRAPI SCHEMA MAPPING
+ * Updated keys to match the user's specific Strapi environment.
  */
 export interface QuoteFormData {
   fullname: string;   

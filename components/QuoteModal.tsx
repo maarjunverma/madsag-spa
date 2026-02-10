@@ -36,7 +36,7 @@ const QuoteModal: React.FC<QuoteModalProps> = ({ isOpen, onClose, preselectedSer
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    // CRITICAL: Ensure 'name' matches the key in formData state
+    // CRITICAL FIX: The key 'name' from the input MUST match the key in state
     setFormData((prev) => ({
       ...prev,
       [name]: value,
@@ -138,7 +138,7 @@ const QuoteModal: React.FC<QuoteModalProps> = ({ isOpen, onClose, preselectedSer
                         <input
                           type="text"
                           id="fullname"
-                          name="fullname"
+                          name="fullname" 
                           value={formData.fullname}
                           onChange={handleChange}
                           required
