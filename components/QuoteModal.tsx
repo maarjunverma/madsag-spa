@@ -48,7 +48,7 @@ const QuoteModal: React.FC<QuoteModalProps> = ({ isOpen, onClose, preselectedSer
 
     // CRITICAL: Mapped to the EXACT Strapi API IDs from the provided screenshot
     const strapiPayload: QuoteFormData = {
-      FullName: formData.name,       // Maps frontend 'name' to Strapi 'FullName'
+      name: formData.name,       // Maps frontend 'name' to Strapi 'FullName'
       email: formData.email,         // Maps to Strapi 'email'
       phone: formData.phone,         // Maps to Strapi 'phone'
       projectType: formData.projectType, // Maps to Strapi 'projectType'
