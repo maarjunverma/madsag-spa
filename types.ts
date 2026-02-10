@@ -80,7 +80,7 @@ export interface ProcessStep {
  * Updated based on the provided Strapi screenshot to match API IDs exactly.
  */
 export interface QuoteFormData {
-  FullName: string;   // Matches "FullName" in image
+  fullname: string;   // Matches "FullName" in image
   email: string;      // Matches "email" in image
   phone: string;      // Matches "phone" in image (Note: Strapi Number type requires numeric string or number)
   projectType: string; // Matches "projectType" in image

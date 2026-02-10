@@ -12,7 +12,7 @@ interface QuoteModalProps {
 
 const QuoteModal: React.FC<QuoteModalProps> = ({ isOpen, onClose, preselectedService, preselectedPlan }) => {
   const [formData, setFormData] = useState({
-    name: '',
+    fullname: '',
     email: '',
     phone: '',
     projectType: 'website-development',
@@ -48,7 +48,7 @@ const QuoteModal: React.FC<QuoteModalProps> = ({ isOpen, onClose, preselectedSer
 
     // CRITICAL: Mapped to the EXACT Strapi API IDs from the provided screenshot
     const strapiPayload: QuoteFormData = {
-      name: formData.name,       // Maps frontend 'name' to Strapi 'FullName'
+     fullname: formData.fullname,       // Maps frontend 'name' to Strapi 'FullName'
       email: formData.email,         // Maps to Strapi 'email'
       phone: formData.phone,         // Maps to Strapi 'phone'
       projectType: formData.projectType, // Maps to Strapi 'projectType'
@@ -65,7 +65,7 @@ const QuoteModal: React.FC<QuoteModalProps> = ({ isOpen, onClose, preselectedSer
         setStatus(s => ({ ...s, success: false }));
         onClose();
         setFormData({
-          name: '',
+         fullname: '',
           email: '',
           phone: '',
           projectType: 'website-development',
@@ -150,7 +150,7 @@ const QuoteModal: React.FC<QuoteModalProps> = ({ isOpen, onClose, preselectedSer
                           type="text"
                           id="name"
                           name="name"
-                          value={formData.name}
+                          value={formData.fullname}
                           onChange={handleChange}
                           required
                           disabled={status.loading}

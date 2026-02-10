@@ -25,7 +25,7 @@ export const apiService = {
     // Payload keys MUST match the API IDs in the Strapi screenshot exactly.
     const payload = {
       data: {
-        name: formData.name.trim(),
+        fullname: formData.fullname.trim(),
         email: formData.email.trim(),
         phone: numericPhone ? parseInt(numericPhone, 10) : 0, 
         projectType: formData.projectType.trim(),
