@@ -13,7 +13,6 @@ interface QuoteModalProps {
 const QuoteModal: React.FC<QuoteModalProps> = ({ isOpen, onClose, preselectedService, preselectedPlan }) => {
   const serviceOptions = Object.values(ServiceType);
   
-  // Internal state matching the user's snippet logic
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -28,7 +27,6 @@ const QuoteModal: React.FC<QuoteModalProps> = ({ isOpen, onClose, preselectedSer
   const [isSuccess, setIsSuccess] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
-  // Sync preselected service from App/ServiceDetailView
   useEffect(() => {
     if (isOpen && preselectedService) {
       setFormData(prev => ({ 
@@ -55,12 +53,11 @@ const QuoteModal: React.FC<QuoteModalProps> = ({ isOpen, onClose, preselectedSer
     setIsSubmitting(true);
     setErrorMsg(null);
 
-    // Map internal state to the established Strapi Lead schema
+    // EXACT KEY MAPPING TO STRAPI: FullName, Email, Mobile_number, Inquiry_subject, Message
     const strapiPayload: QuoteFormData = {
       FullName: formData.name,
       Email: formData.email,
       Mobile_number: formData.phone,
-      // Combine Project Type & Budget for the single 'Inquiry_subject' field
       Inquiry_subject: `${formData.projectType} (${formData.budget} USD)`,
       Message: formData.description,
       url: formData.url
@@ -83,7 +80,7 @@ const QuoteModal: React.FC<QuoteModalProps> = ({ isOpen, onClose, preselectedSer
         });
       }, 3000);
     } catch (err: any) {
-      setErrorMsg(err.message || 'Transmission failed. Ensure your API is reachable.');
+      setErrorMsg(err.message || 'Transmission failure. Check console for target URL.');
     } finally {
       setIsSubmitting(false);
     }
@@ -116,34 +113,35 @@ const QuoteModal: React.FC<QuoteModalProps> = ({ isOpen, onClose, preselectedSer
                 <i className="fa-solid fa-check text-5xl"></i>
               </div>
               <h2 className="text-4xl font-black mb-4 uppercase tracking-tighter">Transmission Successful</h2>
-              <p className="text-gray-500 font-medium">Your strategy brief has been logged. Our lead engineer will contact you shortly.</p>
+              <p className="text-gray-500 font-medium">Data logged. Strategic response initiated.</p>
             </div>
           ) : (
             <>
               <div className="mb-12 text-center">
                 <h2 className="text-xs font-black uppercase tracking-[0.5em] text-amber-500 mb-3">Project Initiation</h2>
-                <h3 className="text-3xl md:text-5xl font-black tracking-tighter uppercase leading-none">DEPLOY YOUR <span className="text-gold">BRIEF</span></h3>
+                <h3 className="text-3xl md:text-5xl font-black tracking-tighter uppercase leading-none">DEPLOY YOUR <span className="text-gold">STRATEGY</span></h3>
                 <div className="w-20 h-1 bg-amber-500 mx-auto mt-6 rounded-full opacity-50"></div>
               </div>
 
               <form onSubmit={handleSubmit} className="relative">
-                <div className="flex flex-col md:flex-row gap-12">
+                <div className="flex flex-col md:flex-row gap-8 lg:gap-14">
                   
-                  {/* Sidebar - Social Rail (20%) */}
-                  <div className="hidden md:flex flex-col w-[15%] relative items-center justify-start pt-10 border-r border-white/5">
-                    <p className="absolute rotate-90 top-[45%] left-[-40px] text-gray-700 text-lg font-black uppercase tracking-[0.5em] whitespace-nowrap origin-center">
+                  {/* Sidebar - Follow Us (15%) */}
+                  <div className="hidden md:flex flex-col w-[15%] relative items-center justify-start pt-14 border-r border-white/5 pr-8">
+                    <p className="absolute rotate-90 top-[40%] left-[-45px] text-gray-700 text-2xl font-black uppercase tracking-[0.5em] whitespace-nowrap origin-center select-none">
                       Follow Strategy
                     </p>
 
-                    <div className="flex flex-col gap-5 mt-20">
+                    <div className="flex flex-col gap-6 mt-24">
                       {[
+                        { icon: 'fa-brands fa-facebook-f', color: 'hover:text-blue-500' },
                         { icon: 'fa-brands fa-instagram', color: 'hover:text-pink-500' },
-                        { icon: 'fa-brands fa-linkedin-in', color: 'hover:text-blue-500' },
-                        { icon: 'fa-brands fa-x-twitter', color: 'hover:text-white' },
-                        { icon: 'fa-brands fa-youtube', color: 'hover:text-red-500' }
+                        { icon: 'fa-brands fa-youtube', color: 'hover:text-red-500' },
+                        { icon: 'fa-brands fa-linkedin-in', color: 'hover:text-blue-400' },
+                        { icon: 'fa-brands fa-pinterest-p', color: 'hover:text-red-600' }
                       ].map((social, i) => (
-                        <span key={i} className={`w-12 h-12 glass rounded-2xl flex items-center justify-center text-gray-600 border-white/5 cursor-pointer transition-all ${social.color} hover:border-white/20 hover:scale-110`}>
-                          <i className={social.icon + ' text-xl'}></i>
+                        <span key={i} className={`w-11 h-11 glass rounded-2xl flex items-center justify-center text-gray-500 border-white/5 cursor-pointer transition-all ${social.color} hover:border-white/20 hover:scale-110`}>
+                          <i className={social.icon + ' text-lg'}></i>
                         </span>
                       ))}
                     </div>
@@ -162,7 +160,7 @@ const QuoteModal: React.FC<QuoteModalProps> = ({ isOpen, onClose, preselectedSer
                           className={inputStyle}
                           value={formData.name}
                           onChange={handleChange}
-                          placeholder="John Doe"
+                          placeholder="Full Name"
                         />
                       </div>
                       <div className="space-y-1">
@@ -175,7 +173,7 @@ const QuoteModal: React.FC<QuoteModalProps> = ({ isOpen, onClose, preselectedSer
                           className={inputStyle}
                           value={formData.email}
                           onChange={handleChange}
-                          placeholder="john@agency.com"
+                          placeholder="email@example.com"
                         />
                       </div>
                     </div>
@@ -191,7 +189,7 @@ const QuoteModal: React.FC<QuoteModalProps> = ({ isOpen, onClose, preselectedSer
                           className={inputStyle}
                           value={formData.phone}
                           onChange={handleChange}
-                          placeholder="+91 00000 00000"
+                          placeholder="+91"
                         />
                       </div>
                       <div className="space-y-1 relative">
@@ -245,7 +243,7 @@ const QuoteModal: React.FC<QuoteModalProps> = ({ isOpen, onClose, preselectedSer
                           className={inputStyle}
                           value={formData.url}
                           onChange={handleChange}
-                          placeholder="https://yoursite.com"
+                          placeholder="https://"
                         />
                       </div>
                     </div>
@@ -260,14 +258,17 @@ const QuoteModal: React.FC<QuoteModalProps> = ({ isOpen, onClose, preselectedSer
                         className={`${inputStyle} min-h-[120px] resize-none`}
                         value={formData.description}
                         onChange={handleChange}
-                        placeholder="Briefly describe your project requirements and ROI objectives..."
+                        placeholder="Briefly describe requirements..."
                       />
                     </div>
 
                     {errorMsg && (
-                      <div className="p-5 bg-red-500/5 border border-red-500/20 rounded-2xl text-red-500 text-[10px] font-black uppercase tracking-widest flex items-center gap-4 animate-in slide-in-from-top-2">
-                        <i className="fa-solid fa-triangle-exclamation"></i>
-                        {errorMsg}
+                      <div className="p-5 bg-red-500/5 border border-red-500/20 rounded-2xl text-red-500 text-[10px] font-black uppercase tracking-widest flex items-start gap-4 animate-in slide-in-from-top-2">
+                        <i className="fa-solid fa-triangle-exclamation mt-0.5"></i>
+                        <div>
+                          <p className="mb-1">TRANSMISSION ERROR:</p>
+                          <p className="normal-case text-gray-500 font-medium">{errorMsg}</p>
+                        </div>
                       </div>
                     )}
 

@@ -6,7 +6,7 @@ import { QuoteFormData } from '../types';
  * MADSAG STRATEGIC API SERVICE
  * 
  * Optimized for Strapi v4/v5 compatibility.
- * Handles strict field mapping and deep error diagnostics.
+ * Ensures strict endpoint targeting and data structure.
  */
 export const apiService = {
   /**
@@ -14,9 +14,11 @@ export const apiService = {
    * Path: /api/leads
    */
   submitLead: async (formData: QuoteFormData) => {
-    const endpoint = `${STRAPI_URL}/api/leads`;
+    // Ensure URL doesn't double up by stripping any trailing slash from base
+    const baseUrl = STRAPI_URL.endsWith('/') ? STRAPI_URL.slice(0, -1) : STRAPI_URL;
+    const endpoint = `${baseUrl}/api/leads`;
     
-    // Construct base data object
+    // Construct base data object - MUST MATCH STRAPI SCHEMA CASE SENSITIVE
     const data: Record<string, string> = {
       FullName: formData.FullName.trim(),
       Mobile_number: formData.Mobile_number.trim(),
@@ -34,8 +36,8 @@ export const apiService = {
 
     try {
       console.log('--- API TRANSMISSION START ---');
-      console.log('Target:', endpoint);
-      console.log('Payload:', payload);
+      console.log('Target Endpoint:', endpoint);
+      console.log('Final Payload:', payload);
       
       const response = await fetch(endpoint, {
         method: 'POST',
@@ -57,28 +59,21 @@ export const apiService = {
       let errorMessage = `Server responded with ${response.status}`;
       try {
         const errorData = await response.json();
-        console.error('Server Error Detail:', errorData);
+        console.error('Detailed Server Error:', errorData);
         
-        // Strapi error format parsing
         if (errorData?.error?.message) {
           errorMessage = errorData.error.message;
-          if (errorData.error.details?.errors) {
-            const specifics = errorData.error.details.errors
-              .map((e: any) => `${e.path}: ${e.message}`)
-              .join(', ');
-            errorMessage += ` (${specifics})`;
-          }
         }
       } catch (parseError) {
         console.error('Could not parse error response body');
       }
 
-      if (response.status === 500) {
-        throw new Error(`INTERNAL_SERVER_ERROR (500): The backend crashed. This usually means a field type mismatch (e.g. sending text to a number field) or a database constraint. Check Strapi logs.`);
+      if (response.status === 405) {
+        throw new Error('METHOD_NOT_ALLOWED (405): The endpoint URL is incorrect or the backend does not allow POST here. Check Strapi routes.');
       }
 
-      if (response.status === 403) {
-        throw new Error('FORBIDDEN (403): Check Public Role permissions for "Lead" create action.');
+      if (response.status === 500) {
+        throw new Error(`INTERNAL_SERVER_ERROR (500): The backend failed. Verify that all required fields (FullName, Mobile_number, Email, Inquiry_subject, Message) are correctly mapped in Strapi.`);
       }
 
       throw new Error(errorMessage);
@@ -86,10 +81,6 @@ export const apiService = {
     } catch (error: any) {
       console.error('--- API TRANSMISSION FAILED ---');
       console.error(error);
-      
-      if (error instanceof TypeError && error.message.includes('fetch')) {
-        throw new Error('NETWORK_FAILURE: The API server is unreachable or CORS is blocking the request.');
-      }
       throw error;
     }
   }
