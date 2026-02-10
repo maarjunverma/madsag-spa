@@ -20,11 +20,11 @@ export const apiService = {
     
     // Construct base data object - MUST MATCH STRAPI SCHEMA CASE SENSITIVE
     const data: Record<string, string> = {
-      FullName: formData.FullName.trim(),
-      Mobile_number: formData.Mobile_number.trim(),
-      Email: formData.Email.trim(),
-      Inquiry_subject: formData.Inquiry_subject.trim(),
-      Message: formData.Message.trim()
+      name: formData.name.trim(),
+      phone: formData.phone.trim(),
+      email: formData.email.trim(),
+      projectType: formData.projectType.trim(),
+     description: formData.description.trim()
     };
 
     // ONLY add 'url' if it actually has a value to prevent validation errors on empty strings

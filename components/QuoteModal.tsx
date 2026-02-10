@@ -50,11 +50,11 @@ const QuoteModal: React.FC<QuoteModalProps> = ({ isOpen, onClose, preselectedSer
 
     // CRITICAL: Map local fields to the Strapi schema required by the backend
     const strapiPayload: QuoteFormData = {
-      FullName: formData.name,
-      Email: formData.email,
-      Mobile_number: formData.phone,
-      Inquiry_subject: `${formData.projectType.toUpperCase()} | Budget: ${formData.budget} USD`,
-      Message: formData.description,
+      name: formData.name,
+      email: formData.email,
+      phone: formData.phone,
+     projectType: `${formData.projectType.toUpperCase()} | Budget: ${formData.budget} USD`,
+     description: formData.description,
       url: formData.url
     };
 
