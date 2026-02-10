@@ -17,7 +17,7 @@ const QuoteModal = () => {
     email: '',
     phone: '',
     projectType: 'website-development', // Default value from select
-    budget: '1000-5000', // Default value from select
+    budget: '10000-50000', // Default value from select
     description: ''
   });
 
