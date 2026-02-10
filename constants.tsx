@@ -7,7 +7,7 @@ export const BRAND_NAME = "MADSAG";
 export const SLOGAN = "ENGINEERING MARKET DOMINANCE";
 
 // PRODUCTION API ENDPOINT
-export const STRAPI_URL = "https://api.madsag.in";
+export const STRAPI_URL = "https://api.madsag.in/api/leads";
 
 export const SYSTEM_ARCH_DOCS = `
 [MADSAG CORE ARCHITECTURE BRIEF]
