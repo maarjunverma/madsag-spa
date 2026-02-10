@@ -11,7 +11,6 @@ interface QuoteModalProps {
 }
 
 const QuoteModal: React.FC<QuoteModalProps> = ({ isOpen, onClose, preselectedService, preselectedPlan }) => {
-  // 1. Local state matching the snippet's logical structure
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -24,7 +23,6 @@ const QuoteModal: React.FC<QuoteModalProps> = ({ isOpen, onClose, preselectedSer
 
   const [status, setStatus] = useState({ loading: false, error: null as string | null, success: false });
 
-  // Sync preselected values from App.tsx
   useEffect(() => {
     if (isOpen) {
       setFormData(prev => ({
@@ -48,13 +46,13 @@ const QuoteModal: React.FC<QuoteModalProps> = ({ isOpen, onClose, preselectedSer
     e.preventDefault();
     setStatus({ loading: true, error: null, success: false });
 
-    // CRITICAL: Map local fields to the Strapi schema required by the backend
+    // CRITICAL: Construct object using keys that match your Strapi Lead schema exactly
     const strapiPayload: QuoteFormData = {
-      name: formData.name,
-      email: formData.email,
-      phone: formData.phone,
-     projectType: `${formData.projectType.toUpperCase()} | Budget: ${formData.budget} USD`,
-     description: formData.description,
+      FullName: formData.name,
+      Email: formData.email,
+      Mobile_number: formData.phone,
+      Inquiry_subject: `${formData.projectType.toUpperCase()} | Budget: ${formData.budget} USD`,
+      Message: formData.description,
       url: formData.url
     };
 
@@ -62,7 +60,6 @@ const QuoteModal: React.FC<QuoteModalProps> = ({ isOpen, onClose, preselectedSer
       await apiService.submitLead(strapiPayload);
       setStatus({ loading: false, error: null, success: true });
       
-      // Auto-close on success after delay
       setTimeout(() => {
         setStatus(s => ({ ...s, success: false }));
         onClose();
@@ -87,16 +84,13 @@ const QuoteModal: React.FC<QuoteModalProps> = ({ isOpen, onClose, preselectedSer
 
   return (
     <div className="fixed inset-0 z-[160] flex items-center justify-center p-0 md:p-6 overflow-y-auto">
-      {/* Backdrop */}
       <div 
         className="fixed inset-0 bg-black/95 backdrop-blur-xl animate-in fade-in duration-500" 
         onClick={status.loading ? undefined : onClose}
       ></div>
       
-      {/* Modal Container */}
       <div className="relative bg-[#0d0d16] w-full max-w-4xl min-h-screen md:min-h-0 md:rounded-[3rem] shadow-2xl border border-white/5 animate-in fade-in zoom-in duration-500 overflow-hidden">
         
-        {/* Close Button */}
         {!status.loading && !status.success && (
           <button 
             onClick={onClose}
@@ -113,11 +107,10 @@ const QuoteModal: React.FC<QuoteModalProps> = ({ isOpen, onClose, preselectedSer
                 <i className="fa-solid fa-check text-5xl"></i>
               </div>
               <h2 className="text-4xl font-black mb-4 uppercase tracking-tighter">Transmission Successful</h2>
-              <p className="text-gray-500 font-medium">Your strategy brief has been logged. Our lead engineer will contact you shortly.</p>
+              <p className="text-gray-500 font-medium">Strategic brief received. Deployment logic initiated.</p>
             </div>
           ) : (
             <>
-              {/* Header */}
               <div className="mb-12 text-center">
                 <h2 className="text-xs font-black uppercase tracking-[0.5em] text-amber-500 mb-3">Project Initiation</h2>
                 <h3 className="text-3xl md:text-5xl font-black tracking-tighter uppercase leading-none">REQUEST A <span className="text-gold">QUOTE</span></h3>
@@ -128,7 +121,6 @@ const QuoteModal: React.FC<QuoteModalProps> = ({ isOpen, onClose, preselectedSer
               <form onSubmit={handleSubmit} className="relative">
                 <div className="flex flex-col md:flex-row gap-10">
                   
-                  {/* Social Sidebar (20% logic from snippet) */}
                   <div className="hidden md:flex flex-col w-[15%] relative items-center justify-start pt-14 border-r border-white/5 pr-8">
                     <p className="absolute rotate-90 top-[40%] left-[-50px] text-gray-800 text-2xl font-black uppercase tracking-[0.5em] whitespace-nowrap origin-center select-none">
                       Follow Strategy
@@ -149,7 +141,6 @@ const QuoteModal: React.FC<QuoteModalProps> = ({ isOpen, onClose, preselectedSer
                     </div>
                   </div>
 
-                  {/* Main Form Fields (80% logic from snippet) */}
                   <div className="flex-1 space-y-6">
                     <div className="grid md:grid-cols-2 gap-6">
                       <div className="space-y-1">

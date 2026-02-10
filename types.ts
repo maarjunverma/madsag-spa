@@ -75,12 +75,16 @@ export interface ProcessStep {
   icon: string;
 }
 
+/**
+ * EXACT STRAPI SCHEMA MAPPING
+ * These keys must match the Strapi collection fields exactly (Case Sensitive).
+ */
 export interface QuoteFormData {
-  name: string;
- phone: string;
-  email: string;
-  projectType: string;
+  FullName: string;
+  Mobile_number: string;
+  Email: string;
+  Inquiry_subject: string;
+  Message: string;
   url: string;
-  description: string;
-  whatsappApproval?: boolean; // Optional metadata
+  whatsappApproval?: boolean;
 }
