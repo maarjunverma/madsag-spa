@@ -2,7 +2,7 @@
 import { Service, ServiceType, ProcessStep, BlogPost, PortfolioItem, FAQItem, ServicePackage } from './types';
 
 export const AGENCY_OWNER = "MADSAG Team";
-export const WHATSAPP_PHONE = "919876543210"; 
+export const WHATSAPP_PHONE = "919896336357"; 
 export const BRAND_NAME = "MADSAG";
 export const SLOGAN = "ENGINEERING MARKET DOMINANCE";
 
