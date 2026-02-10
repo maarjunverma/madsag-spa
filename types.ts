@@ -76,11 +76,11 @@ export interface ProcessStep {
 }
 
 export interface QuoteFormData {
-  FullName: string;
-  Mobile_number: string;
-  Email: string;
-  Inquiry_subject: string;
+  name: string;
+ phone: string;
+  email: string;
+  projectType: string;
   url: string;
-  Message: string;
+  description: string;
   whatsappApproval?: boolean; // Optional metadata
 }
