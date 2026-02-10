@@ -76,15 +76,15 @@ export interface ProcessStep {
 }
 
 /**
- * EXACT STRAPI SCHEMA MAPPING
- * These keys must match the Strapi collection fields exactly (Case Sensitive).
+ * STRAPI SCHEMA MAPPING - STRICT ALIGNMENT
+ * Updated based on the provided Strapi screenshot to match API IDs exactly.
  */
 export interface QuoteFormData {
-  FullName: string;
-  Mobile_number: string;
-  Email: string;
-  Inquiry_subject: string;
-  Message: string;
-  url: string;
-  whatsappApproval?: boolean;
+  FullName: string;   // Matches "FullName" in image
+  email: string;      // Matches "email" in image
+  phone: string;      // Matches "phone" in image (Note: Strapi Number type requires numeric string or number)
+  projectType: string; // Matches "projectType" in image
+  budget: string;      // Matches "budget" in image
+  description: string; // Matches "description" in image
+  url?: string;        // Matches "url" in image
 }

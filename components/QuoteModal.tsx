@@ -46,14 +46,15 @@ const QuoteModal: React.FC<QuoteModalProps> = ({ isOpen, onClose, preselectedSer
     e.preventDefault();
     setStatus({ loading: true, error: null, success: false });
 
-    // CRITICAL: Construct object using keys that match your Strapi Lead schema exactly
+    // CRITICAL: Mapped to the EXACT Strapi API IDs from the provided screenshot
     const strapiPayload: QuoteFormData = {
-      FullName: formData.name,
-      Email: formData.email,
-      Mobile_number: formData.phone,
-      Inquiry_subject: `${formData.projectType.toUpperCase()} | Budget: ${formData.budget} USD`,
-      Message: formData.description,
-      url: formData.url
+      FullName: formData.name,       // Maps frontend 'name' to Strapi 'FullName'
+      email: formData.email,         // Maps to Strapi 'email'
+      phone: formData.phone,         // Maps to Strapi 'phone'
+      projectType: formData.projectType, // Maps to Strapi 'projectType'
+      budget: formData.budget,       // Maps to Strapi 'budget'
+      description: formData.description, // Maps to Strapi 'description'
+      url: formData.url              // Maps to Strapi 'url'
     };
 
     try {

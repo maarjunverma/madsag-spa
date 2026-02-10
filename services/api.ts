@@ -5,8 +5,8 @@ import { QuoteFormData } from '../types';
 /**
  * MADSAG STRATEGIC API SERVICE
  * 
- * Optimized for Strapi v4/v5 compatibility.
- * Ensures strict field mapping to the backend schema.
+ * Optimized for the provided Strapi schema:
+ * Attributes: FullName, email, phone (Number), projectType, budget, url, description
  */
 export const apiService = {
   /**
@@ -18,22 +18,27 @@ export const apiService = {
     const baseUrl = STRAPI_URL.endsWith('/') ? STRAPI_URL.slice(0, -1) : STRAPI_URL;
     const endpoint = `${baseUrl}/api/leads`;
     
-    // Construct the payload. Strapi requires the 'data' wrapper.
+    // Process phone: The Strapi image shows it as a 'Number' type (123 icon).
+    // We must strip non-numeric characters so it doesn't cause a 500 error.
+    const numericPhone = formData.phone.replace(/\D/g, '');
+
+    // Payload keys MUST match the API IDs in the Strapi screenshot exactly.
     const payload = {
       data: {
         FullName: formData.FullName.trim(),
-        Mobile_number: formData.Mobile_number.trim(),
-        Email: formData.Email.trim(),
-        Inquiry_subject: formData.Inquiry_subject.trim(),
-        Message: formData.Message.trim(),
-        url: formData.url.trim() || ""
+        email: formData.email.trim(),
+        phone: numericPhone ? parseInt(numericPhone, 10) : 0, 
+        projectType: formData.projectType.trim(),
+        budget: formData.budget.trim(),
+        description: formData.description.trim(),
+        url: formData.url?.trim() || ""
       }
     };
 
     try {
       console.log('--- API TRANSMISSION START ---');
-      console.log('Endpoint:', endpoint);
-      console.log('Payload:', payload);
+      console.log('Target Endpoint:', endpoint);
+      console.log('Schema Mapping (Image Sync):', payload.data);
       
       const response = await fetch(endpoint, {
         method: 'POST',
@@ -50,24 +55,20 @@ export const apiService = {
         return result;
       }
 
-      // Diagnose failures
+      // Handle server-side validation or internal errors
       let errorMessage = `Server responded with ${response.status}`;
       try {
         const errorData = await response.json();
-        console.error('Detailed Server Error:', errorData);
+        console.error('Detailed Backend Error:', errorData);
         if (errorData?.error?.message) {
           errorMessage = errorData.error.message;
         }
       } catch (e) {
-        console.error('Non-JSON error response received.');
+        console.error('Non-JSON error response.');
       }
 
       if (response.status === 500) {
-        throw new Error("INTERNAL_SERVER_ERROR (500): Check Strapi logs. Likely a field validation failure or missing required column.");
-      }
-
-      if (response.status === 405) {
-        throw new Error("METHOD_NOT_ALLOWED (405): The endpoint URL is likely incorrect. Check for trailing slashes or doubled paths.");
+        throw new Error("INTERNAL_SERVER_ERROR (500): Check field names (FullName, projectType, etc.) and ensure 'phone' is receiving a valid number.");
       }
 
       throw new Error(errorMessage);
