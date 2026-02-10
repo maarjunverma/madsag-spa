@@ -1,13 +1,15 @@
 
 import React, { useState } from 'react';
 import { BRAND_NAME } from '../constants';
+import { GlobalData } from '../types';
 
 interface NavbarProps {
   onGetQuote: () => void;
   activeSectionId: string | null;
+  globalData: GlobalData | null;
 }
 
-const Navbar: React.FC<NavbarProps> = ({ onGetQuote, activeSectionId }) => {
+const Navbar: React.FC<NavbarProps> = ({ onGetQuote, activeSectionId, globalData }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const navLinks = [
@@ -31,12 +33,21 @@ const Navbar: React.FC<NavbarProps> = ({ onGetQuote, activeSectionId }) => {
           className="flex items-center gap-3 group cursor-pointer" 
           onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
         >
-          <div className="w-10 h-10 bg-gradient-to-br from-amber-500 to-yellow-700 rounded-xl flex items-center justify-center font-black text-white text-xl shadow-lg shadow-amber-500/20 group-hover:scale-110 transition-transform">
-            M
-          </div>
+          {globalData?.logoUrl ? (
+            <img 
+              src={globalData.logoUrl} 
+              alt={globalData.siteName} 
+              className="h-10 w-auto group-hover:scale-105 transition-transform" 
+            />
+          ) : (
+            <div className="w-10 h-10 bg-[#0a0a0a] border border-white/10 rounded-xl flex items-center justify-center font-black text-white text-xl shadow-lg group-hover:scale-110 transition-transform">
+              {globalData?.siteName?.charAt(0) || BRAND_NAME.charAt(0)}
+            </div>
+          )}
+          
           <div className="flex flex-col">
             <span className="font-black text-xl md:text-2xl tracking-tighter uppercase text-white leading-none">
-              {BRAND_NAME}
+              {globalData?.siteName || BRAND_NAME}
             </span>
             <span className="text-[8px] font-black tracking-[0.4em] text-amber-500 uppercase">Strategy Group</span>
           </div>
@@ -63,7 +74,7 @@ const Navbar: React.FC<NavbarProps> = ({ onGetQuote, activeSectionId }) => {
         <div className="flex items-center gap-4">
           <button 
             onClick={onGetQuote}
-            className="hidden sm:block bg-gradient-to-r from-amber-600 to-yellow-800 hover:from-amber-500 hover:to-yellow-700 text-white px-6 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all hover:scale-105 active:scale-95 shadow-xl shadow-amber-500/10"
+            className="hidden sm:block bg-[#0a0a0a] border border-white/10 hover:border-amber-500/50 text-white px-6 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all hover:scale-105 active:scale-95 shadow-xl"
           >
             Enquire Now
           </button>
@@ -101,7 +112,7 @@ const Navbar: React.FC<NavbarProps> = ({ onGetQuote, activeSectionId }) => {
               setIsMenuOpen(false);
               onGetQuote();
             }}
-            className="mt-4 bg-gradient-to-r from-amber-600 to-yellow-800 text-white px-10 py-4 rounded-2xl text-xs font-black uppercase tracking-widest shadow-2xl"
+            className="mt-4 bg-[#0a0a0a] border border-white/10 text-white px-10 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest shadow-2xl"
           >
             Enquire Now
           </button>

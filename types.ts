@@ -75,10 +75,6 @@ export interface ProcessStep {
   icon: string;
 }
 
-/**
- * STRAPI SCHEMA MAPPING
- * Updated keys to match the user's specific Strapi environment.
- */
 export interface QuoteFormData {
   fullname: string;   
   email: string;      
@@ -86,5 +82,31 @@ export interface QuoteFormData {
   projectType: string; 
   budget: string;      
   description: string; 
-  url?: string;        
+  url?: string;
+  // Dynamic fields
+  targetAudience?: string;
+  marketingGoals?: string;
+  productCount?: string;
+  targetKeywords?: string;
+}
+
+/**
+ * GLOBAL CONFIGURATION INTERFACES
+ */
+export interface SEOConfig {
+  metaTitle: string;
+  metaDescription: string;
+  keywords?: string;
+  shareImage?: string;
+}
+
+export interface GlobalData {
+  siteName: string;
+  siteDescription: string;
+  logoUrl?: string;
+  faviconUrl?: string;
+  seo: SEOConfig;
+  footerText?: string;
+  contactEmail?: string;
+  contactPhone?: string;
 }

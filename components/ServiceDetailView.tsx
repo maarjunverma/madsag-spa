@@ -18,7 +18,7 @@ const ServiceDetailView: React.FC<ServiceDetailViewProps> = ({ service, onClose,
       {/* Persistent Nav */}
       <div className="sticky top-0 z-50 glass px-6 py-4 flex justify-between items-center border-b border-white/5">
         <div className="flex items-center gap-3">
-          <div className={`w-8 h-8 md:w-10 md:h-10 bg-gradient-to-br ${service.gradient} rounded-lg flex items-center justify-center`}>
+          <div className={`w-8 h-8 md:w-10 md:h-10 bg-[#0a0a0a] border border-white/10 rounded-lg flex items-center justify-center`}>
             <i className={`${service.icon} text-white text-sm md:text-base`}></i>
           </div>
           <span className="font-black text-lg md:text-xl tracking-tighter uppercase whitespace-nowrap">{service.name}</span>
@@ -31,17 +31,17 @@ const ServiceDetailView: React.FC<ServiceDetailViewProps> = ({ service, onClose,
         </button>
       </div>
 
-      <div className="max-w-7xl mx-auto px-6 py-12 md:py-16">
+      <div className="max-w-7xl mx-auto px-6 py-8 md:py-16">
         <div className="grid lg:grid-cols-12 gap-10 md:gap-16">
           
           {/* Main Content */}
-          <div className="lg:col-span-8 space-y-16 md:space-y-24">
+          <div className="lg:col-span-8 space-y-12 md:space-y-24">
             <section>
-              <h1 className="text-4xl md:text-7xl font-black mb-6 md:mb-8 leading-[1.1] md:leading-[0.9] uppercase tracking-tighter">
+              <h1 className="text-3xl md:text-7xl font-black mb-6 md:mb-8 leading-[1.1] md:leading-[0.9] uppercase tracking-tighter">
                 {service.name} <br className="hidden md:block"/> 
                 <span className="text-gold">CORE ARCHITECTURE</span>
               </h1>
-              <p className="text-gray-400 text-lg md:text-xl leading-relaxed max-w-3xl font-medium">
+              <p className="text-gray-400 text-sm md:text-xl leading-relaxed max-w-3xl font-medium">
                 {service.fullDescription}
               </p>
             </section>
@@ -49,36 +49,36 @@ const ServiceDetailView: React.FC<ServiceDetailViewProps> = ({ service, onClose,
             {/* Service Packages - Tiered Style */}
             {service.packages && (
               <section>
-                <div className="mb-10 md:mb-12">
-                  <h2 className="text-[9px] md:text-[10px] font-black uppercase tracking-[0.5em] text-amber-500 mb-4">Investment Matrix</h2>
-                  <h3 className="text-3xl md:text-4xl font-black tracking-tighter uppercase leading-none">STRATEGIC <span className="text-gold">TIERS</span></h3>
+                <div className="mb-8 md:mb-12">
+                  <h2 className="text-[8px] md:text-[10px] font-black uppercase tracking-[0.5em] text-amber-500 mb-4">Investment Matrix</h2>
+                  <h3 className="text-2xl md:text-4xl font-black tracking-tighter uppercase leading-none">STRATEGIC <span className="text-gold">TIERS</span></h3>
                 </div>
 
                 <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-6">
                   {service.packages.map((pkg, idx) => (
                     <div 
                       key={idx} 
-                      className={`relative glass rounded-[2rem] md:rounded-[2.5rem] p-6 md:p-8 flex flex-col transition-all duration-500 border-white/5 group hover:border-amber-500/30 ${
+                      className={`relative glass rounded-[2rem] p-6 md:p-8 flex flex-col transition-all duration-500 border-white/5 group hover:border-amber-500/30 ${
                         pkg.recommended ? 'ring-2 ring-amber-500/20 xl:scale-105 bg-white/[0.03]' : ''
                       }`}
                     >
                       {pkg.recommended && (
-                        <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1.5 bg-amber-500 rounded-full text-[9px] font-black uppercase tracking-widest text-black shadow-lg">
+                        <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1.5 bg-amber-500 rounded-full text-[8px] font-black uppercase tracking-widest text-black shadow-lg">
                           Recommended
                         </div>
                       )}
 
                       <div className="mb-6 md:mb-8">
-                        <h4 className="text-amber-500 text-[10px] font-black uppercase tracking-widest mb-2">{pkg.name}</h4>
+                        <h4 className="text-amber-500 text-[9px] md:text-[10px] font-black uppercase tracking-widest mb-2">{pkg.name}</h4>
                         <div className="flex items-baseline gap-2 mb-4">
-                          <span className="text-3xl md:text-4xl font-black text-white tracking-tighter">{pkg.price}</span>
+                          <span className="text-2xl md:text-4xl font-black text-white tracking-tighter">{pkg.price}</span>
                         </div>
-                        <p className="text-gray-500 text-xs leading-relaxed font-medium">{pkg.description}</p>
+                        <p className="text-gray-500 text-[10px] md:text-xs leading-relaxed font-medium">{pkg.description}</p>
                       </div>
 
                       <ul className="space-y-4 mb-8 md:mb-10 flex-grow">
                         {pkg.features.map((f, i) => (
-                          <li key={i} className="flex items-start gap-3 text-xs font-bold text-gray-400">
+                          <li key={i} className="flex items-start gap-3 text-[10px] md:text-xs font-bold text-gray-400">
                             <i className="fa-solid fa-circle-check text-amber-500/50 mt-0.5"></i>
                             {f}
                           </li>
@@ -86,17 +86,13 @@ const ServiceDetailView: React.FC<ServiceDetailViewProps> = ({ service, onClose,
                       </ul>
 
                       <div className="pt-6 border-t border-white/5 space-y-4">
-                        <div className="flex justify-between text-[9px] font-black uppercase tracking-widest text-gray-600">
-                          <span className="flex items-center gap-2"><i className="fa-solid fa-clock"></i> {pkg.deliveryTime}</span>
-                          <span className="flex items-center gap-2"><i className="fa-solid fa-rotate"></i> {pkg.revisions}</span>
+                        <div className="flex justify-between text-[8px] md:text-[9px] font-black uppercase tracking-widest text-gray-600">
+                          <span className="flex items-center gap-1.5 md:gap-2"><i className="fa-solid fa-clock"></i> {pkg.deliveryTime}</span>
+                          <span className="flex items-center gap-1.5 md:gap-2"><i className="fa-solid fa-rotate"></i> {pkg.revisions}</span>
                         </div>
                         <button 
                           onClick={() => onEnquire(pkg.name)}
-                          className={`w-full py-4 rounded-xl font-black uppercase text-[10px] tracking-widest transition-all ${
-                            pkg.recommended 
-                            ? `bg-gradient-to-r ${service.gradient} text-white shadow-xl shadow-amber-500/20 hover:scale-[1.02]` 
-                            : 'glass border-white/10 text-white hover:bg-white/10'
-                          }`}
+                          className={`w-full py-4 rounded-xl font-black uppercase text-[8px] md:text-[10px] tracking-widest transition-all bg-[#0a0a0a] border border-white/10 text-white shadow-xl hover:border-amber-500/50 hover:bg-black`}
                         >
                           Deploy {pkg.name.split(' ')[0]}
                         </button>
@@ -109,8 +105,8 @@ const ServiceDetailView: React.FC<ServiceDetailViewProps> = ({ service, onClose,
 
             {/* Strategic Roadmap */}
             <section className="bg-white/5 border border-white/10 rounded-[2rem] md:rounded-[3rem] p-6 md:p-10 relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-amber-500/10 blur-3xl"></div>
-              <h2 className="text-xl md:text-2xl font-black mb-10 flex items-center gap-3 uppercase">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-amber-500/5 blur-3xl"></div>
+              <h2 className="text-lg md:text-2xl font-black mb-10 flex items-center gap-3 uppercase tracking-tighter">
                 <i className="fa-solid fa-map text-amber-500"></i>
                 STRATEGIC <br className="md:hidden" /> ROADMAP
               </h2>
@@ -129,10 +125,10 @@ const ServiceDetailView: React.FC<ServiceDetailViewProps> = ({ service, onClose,
                     </div>
                     <div>
                       <div className="flex flex-wrap items-center gap-3 mb-1">
-                        <span className="text-[10px] md:text-xs font-black uppercase text-amber-500 tracking-widest">{item.phase}</span>
-                        <span className={`text-[8px] md:text-[9px] px-2 py-0.5 rounded-full font-black uppercase tracking-widest ${
-                          item.status === 'Complete' ? 'bg-green-500/20 text-green-500' : 
-                          item.status === 'In Progress' ? 'bg-amber-500/20 text-amber-500' : 'bg-white/5 text-gray-500'
+                        <span className="text-[9px] md:text-xs font-black uppercase text-amber-500 tracking-widest">{item.phase}</span>
+                        <span className={`text-[7px] md:text-[9px] px-2 py-0.5 rounded-full font-black uppercase tracking-widest ${
+                          item.status === 'Complete' ? 'bg-green-500/10 text-green-500' : 
+                          item.status === 'In Progress' ? 'bg-amber-500/10 text-amber-500' : 'bg-white/5 text-gray-500'
                         }`}>
                           {item.status}
                         </span>
@@ -149,19 +145,19 @@ const ServiceDetailView: React.FC<ServiceDetailViewProps> = ({ service, onClose,
           <div className="lg:col-span-4">
             <div className="sticky top-24 lg:top-32 space-y-8">
               <div className="glass p-6 md:p-8 rounded-[1.5rem] md:rounded-[2rem] border-white/5">
-                <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-amber-500 mb-6 md:mb-8">Performance Metrics</h3>
+                <h3 className="text-[9px] md:text-[10px] font-black uppercase tracking-[0.3em] text-amber-500 mb-6 md:mb-8">Performance Metrics</h3>
                 <div className="grid grid-cols-2 lg:grid-cols-1 gap-6 md:gap-8">
                   {service.stats.map((stat, idx) => (
                     <div key={idx}>
-                      <p className="text-gray-500 text-[9px] md:text-[10px] uppercase font-black tracking-widest mb-1">{stat.label}</p>
-                      <p className="text-2xl md:text-3xl font-black text-white tracking-tighter">{stat.value}</p>
+                      <p className="text-gray-500 text-[8px] md:text-[10px] uppercase font-black tracking-widest mb-1">{stat.label}</p>
+                      <p className="text-xl md:text-3xl font-black text-white tracking-tighter">{stat.value}</p>
                     </div>
                   ))}
                 </div>
                 <div className="mt-8 md:mt-12 pt-8 border-t border-white/10">
                   <button 
                     onClick={() => onEnquire()}
-                    className={`w-full py-4 md:py-5 bg-gradient-to-r ${service.gradient} text-white rounded-2xl font-black text-xs uppercase tracking-[0.2em] shadow-2xl transition-all hover:scale-105`}
+                    className={`w-full py-4 md:py-5 bg-[#0a0a0a] border border-white/10 text-white rounded-2xl font-black text-[10px] md:text-xs uppercase tracking-[0.2em] shadow-2xl transition-all hover:scale-105 hover:border-amber-500/50`}
                   >
                     Custom Briefing
                   </button>
@@ -169,12 +165,12 @@ const ServiceDetailView: React.FC<ServiceDetailViewProps> = ({ service, onClose,
               </div>
 
               <div className="glass p-6 md:p-8 rounded-[1.5rem] md:rounded-[2rem] border-white/5">
-                <p className="text-xs font-bold text-gray-400 leading-relaxed italic">
+                <p className="text-[10px] md:text-xs font-bold text-gray-400 leading-relaxed italic">
                   "Our engineering standards for {service.name} are designed for market dominance. Every deployment is audited by our core strategy team."
                 </p>
                 <div className="mt-6 flex items-center gap-3">
                    <div className="w-8 h-8 rounded-full bg-amber-500 flex items-center justify-center font-black text-black text-[10px]">M</div>
-                   <span className="text-[10px] font-black uppercase tracking-widest">MADSAG UNIT</span>
+                   <span className="text-[9px] md:text-[10px] font-black uppercase tracking-widest">MADSAG UNIT</span>
                 </div>
               </div>
             </div>

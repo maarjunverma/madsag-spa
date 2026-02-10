@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import ServiceSection from './components/ServiceSection';
@@ -15,10 +15,12 @@ import PortfolioModal from './components/PortfolioModal';
 import BlogModal from './components/BlogModal';
 import ServiceDetailView from './components/ServiceDetailView';
 import { SERVICES, BRAND_NAME, SLOGAN } from './constants';
-import { ServiceType, PortfolioItem, BlogPost, Service } from './types';
+import { ServiceType, PortfolioItem, BlogPost, Service, GlobalData } from './types';
 import { useIntersectionObserver } from './hooks/useIntersectionObserver';
+import { apiService } from './services/api';
 
 const App: React.FC = () => {
+  const [globalData, setGlobalData] = useState<GlobalData | null>(null);
   const [isQuoteModalOpen, setIsQuoteModalOpen] = useState(false);
   const [selectedServiceType, setSelectedServiceType] = useState<ServiceType | ''>('');
   const [selectedPlan, setSelectedPlan] = useState<string>('');
@@ -30,6 +32,31 @@ const App: React.FC = () => {
   const [selectedBlogPost, setSelectedBlogPost] = useState<BlogPost | null>(null);
 
   const [activeDetailService, setActiveDetailService] = useState<Service | null>(null);
+
+  // Fetch Global Configuration
+  useEffect(() => {
+    const fetchGlobal = async () => {
+      const data = await apiService.getGlobalData();
+      if (data) {
+        setGlobalData(data);
+        // Update Document Title & SEO
+        document.title = data.seo.metaTitle;
+        const metaDesc = document.querySelector('meta[name="description"]');
+        if (metaDesc) metaDesc.setAttribute('content', data.seo.metaDescription);
+        
+        if (data.faviconUrl) {
+          let link: HTMLLinkElement | null = document.querySelector("link[rel*='icon']");
+          if (!link) {
+            link = document.createElement('link');
+            link.rel = 'icon';
+            document.head.appendChild(link);
+          }
+          link.href = data.faviconUrl;
+        }
+      }
+    };
+    fetchGlobal();
+  }, []);
 
   const activeSectionId = useIntersectionObserver({
     threshold: 0.3,
@@ -98,7 +125,11 @@ const App: React.FC = () => {
         <div className="absolute bottom-[0%] right-[-10%] w-[40%] h-[40%] bg-yellow-600/5 blur-[150px] rounded-full"></div>
       </div>
 
-      <Navbar onGetQuote={() => openQuoteModal()} activeSectionId={activeSectionId} />
+      <Navbar 
+        onGetQuote={() => openQuoteModal()} 
+        activeSectionId={activeSectionId} 
+        globalData={globalData}
+      />
       
       <main className="relative z-10">
         <Hero onGetQuote={() => openQuoteModal()} />
@@ -128,10 +159,19 @@ const App: React.FC = () => {
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center md:items-start gap-12 relative z-10">
           <div className="space-y-4 flex flex-col items-center md:items-start">
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 bg-amber-500 rounded-lg flex items-center justify-center font-black text-white">M</div>
-              <span className="font-black text-3xl tracking-tighter uppercase text-white leading-none">{BRAND_NAME}</span>
+              {globalData?.logoUrl ? (
+                <img src={globalData.logoUrl} alt={globalData.siteName} className="h-10 w-auto" />
+              ) : (
+                <div className="w-8 h-8 bg-amber-500 rounded-lg flex items-center justify-center font-black text-white">M</div>
+              )}
+              <span className="font-black text-3xl tracking-tighter uppercase text-white leading-none">
+                {globalData?.siteName || BRAND_NAME}
+              </span>
             </div>
             <p className="text-amber-500 font-black text-[10px] uppercase tracking-[0.3em]">{SLOGAN}</p>
+            {globalData?.footerText && (
+               <p className="text-gray-500 text-xs font-medium max-w-sm">{globalData.footerText}</p>
+            )}
           </div>
           
           <div className="grid grid-cols-2 md:grid-cols-2 gap-12 w-full md:w-auto">
@@ -155,8 +195,8 @@ const App: React.FC = () => {
         </div>
 
         <div className="max-w-6xl mx-auto mt-16 pt-8 border-t border-white/5 flex flex-col sm:flex-row justify-between items-center gap-4 text-[10px] font-bold text-gray-600 uppercase tracking-widest text-center sm:text-left">
-          <p>&copy; {new Date().getFullYear()} {BRAND_NAME} STRATEGY GROUP.</p>
-          <p>Global Digital Infrastructure v1.0</p>
+          <p>&copy; {new Date().getFullYear()} {globalData?.siteName || BRAND_NAME} STRATEGY GROUP.</p>
+          <p>Global Digital Infrastructure v1.1</p>
         </div>
       </footer>
 

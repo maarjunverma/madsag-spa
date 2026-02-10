@@ -16,23 +16,23 @@ const Hero: React.FC<HeroProps> = ({ onGetQuote }) => {
           Digital Excellence Platform
         </div>
         
-        <h1 className="text-5xl sm:text-6xl md:text-8xl lg:text-9xl font-black mb-8 md:mb-10 tracking-tighter leading-[0.95] md:leading-[0.9] uppercase text-white">
+        <h1 className="text-4xl sm:text-6xl md:text-8xl lg:text-9xl font-black mb-8 md:mb-10 tracking-tighter leading-[1.1] md:leading-[0.9] uppercase text-white">
           TURNING <span className="text-gold">CLICKS</span> <br className="hidden md:block"/> 
           INTO CUSTOMERS.
         </h1>
         
-        <p className="text-gray-400 text-base md:text-xl max-w-2xl mx-auto mb-10 md:mb-14 leading-relaxed font-medium">
+        <p className="text-gray-400 text-sm md:text-xl max-w-2xl mx-auto mb-10 md:mb-14 leading-relaxed font-medium px-4 md:px-0">
           <span className="text-white font-bold">{BRAND_NAME}</span> is the high-stakes digital agency for brands that refuse to be average. We build the architecture of your future success.
         </p>
         
-        <div className="flex flex-col sm:flex-row gap-4 md:gap-6 justify-center w-full max-w-md mx-auto sm:max-w-none">
+        <div className="flex flex-col sm:flex-row gap-4 md:gap-6 justify-center w-full max-w-xs mx-auto sm:max-w-none">
           <button 
             onClick={onGetQuote}
-            className="w-full sm:w-auto px-10 md:px-12 py-5 bg-gradient-to-r from-amber-600 to-yellow-800 hover:scale-105 text-white rounded-2xl font-black text-xs uppercase tracking-[0.3em] transition-all shadow-2xl shadow-amber-500/20"
+            className="w-full sm:w-auto px-10 md:px-12 py-5 bg-[#0a0a0a] border border-white/10 hover:border-amber-500/50 hover:bg-[#111] text-white rounded-2xl font-black text-[10px] md:text-xs uppercase tracking-[0.3em] transition-all shadow-2xl"
           >
             Initiate Deployment
           </button>
-          <a href="#process" className="w-full sm:w-auto px-10 md:px-12 py-5 glass border-white/10 hover:bg-white/5 text-white rounded-2xl font-black text-xs uppercase tracking-[0.3em] transition-all flex items-center justify-center">
+          <a href="#process" className="w-full sm:w-auto px-10 md:px-12 py-5 bg-[#161616]/50 glass border-white/5 hover:bg-white/5 text-white rounded-2xl font-black text-[10px] md:text-xs uppercase tracking-[0.3em] transition-all flex items-center justify-center">
             Our Strategy
           </a>
         </div>
