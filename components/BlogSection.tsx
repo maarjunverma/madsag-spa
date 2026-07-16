@@ -1,13 +1,22 @@
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { BLOG_POSTS } from '../constants';
 import { BlogPost } from '../types';
+import { apiService } from '../services/api';
 
 interface BlogSectionProps {
   onReadBlog: (post: BlogPost) => void;
 }
 
 const BlogSection: React.FC<BlogSectionProps> = ({ onReadBlog }) => {
+  const [posts, setPosts] = useState<BlogPost[]>(BLOG_POSTS);
+
+  useEffect(() => {
+    apiService.getBlogPosts().then(data => {
+      if (data.length > 0) setPosts(data);
+    }).catch(() => {/* keep static fallback */});
+  }, []);
+
   return (
     <section id="blog" className="py-24 px-6 relative overflow-hidden">
       <div className="max-w-6xl mx-auto">
@@ -27,18 +36,24 @@ const BlogSection: React.FC<BlogSectionProps> = ({ onReadBlog }) => {
         </div>
 
         <div className="grid md:grid-cols-3 gap-8">
-          {BLOG_POSTS.map((post) => (
+          {posts.map((post) => (
             <div 
               key={post.id} 
               className="group cursor-pointer flex flex-col h-full"
               onClick={() => onReadBlog(post)}
             >
               <div className="relative aspect-[4/3] rounded-[2rem] overflow-hidden mb-6 glass border-white/5">
-                <img 
-                  src={post.image} 
-                  alt={post.title} 
-                  className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" 
-                />
+                {post.image ? (
+                  <img 
+                    src={post.image} 
+                    alt={post.title} 
+                    className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" 
+                  />
+                ) : (
+                  <div className="w-full h-full bg-gradient-to-br from-amber-500/10 to-yellow-600/5 flex items-center justify-center">
+                    <i className="fa-solid fa-newspaper text-amber-500/30 text-4xl" />
+                  </div>
+                )}
                 <div className="absolute inset-0 bg-gradient-to-t from-gray-950/80 via-transparent to-transparent opacity-60 group-hover:opacity-40 transition-opacity"></div>
                 <div className="absolute top-4 left-4">
                   <span className="px-3 py-1 bg-amber-500 text-black text-[9px] font-black uppercase tracking-widest rounded-full">

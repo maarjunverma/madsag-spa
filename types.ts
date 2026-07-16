@@ -30,6 +30,7 @@ export interface RoadmapItem {
 
 export interface PortfolioItem {
   id: string;
+  strapiId?: number; // Strapi document ID for CUD operations
   title: string;
   client: string;
   thumbnail: string;
@@ -40,10 +41,12 @@ export interface PortfolioItem {
   result: string;
   images: string[];
   tags: string[];
+  liveUrl?: string;
 }
 
 export interface BlogPost {
   id: string;
+  strapiId?: number; // Strapi document ID for CUD operations
   title: string;
   excerpt: string;
   content: string;
@@ -109,4 +112,30 @@ export interface GlobalData {
   footerText?: string;
   contactEmail?: string;
   contactPhone?: string;
+}
+
+/**
+ * ADMIN / AUTH INTERFACES
+ */
+export interface StrapiUser {
+  id: number;
+  username: string;
+  email: string;
+}
+
+export interface AdminAuthState {
+  user: StrapiUser | null;
+  token: string | null;
+  isAuthenticated: boolean;
+}
+
+export interface StrapiLead {
+  id: number;
+  FullName: string;
+  Email: string;
+  Mobile_number: string;
+  Inquiry_subject: string;
+  url?: string;
+  Message: string;
+  createdAt: string;
 }

@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
+import { Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import ServiceSection from './components/ServiceSection';
@@ -14,12 +15,27 @@ import QuoteModal from './components/QuoteModal';
 import PortfolioModal from './components/PortfolioModal';
 import BlogModal from './components/BlogModal';
 import ServiceDetailView from './components/ServiceDetailView';
+import MadsagLogo from './components/MadsagLogo';
+import ServicesGrid from './components/ServicesGrid';
+import AdminApp from './admin/AdminApp';
 import { SERVICES, BRAND_NAME, SLOGAN } from './constants';
 import { ServiceType, PortfolioItem, BlogPost, Service, GlobalData } from './types';
 import { useIntersectionObserver } from './hooks/useIntersectionObserver';
 import { apiService } from './services/api';
+import { useScrollReveal } from './hooks/useScrollReveal';
 
 const App: React.FC = () => {
+  return (
+    <Routes>
+      <Route path="/admin/*" element={<AdminApp />} />
+      <Route path="/*" element={<PublicSite />} />
+    </Routes>
+  );
+};
+
+const PublicSite: React.FC = () => {
+  useScrollReveal();  // powers scroll-triggered reveal animations site-wide
+
   const [globalData, setGlobalData] = useState<GlobalData | null>(null);
   const [isQuoteModalOpen, setIsQuoteModalOpen] = useState(false);
   const [selectedServiceType, setSelectedServiceType] = useState<ServiceType | ''>('');
@@ -133,6 +149,9 @@ const App: React.FC = () => {
       
       <main className="relative z-10">
         <Hero onGetQuote={() => openQuoteModal()} />
+
+        {/* ── Core Services Grid (Adstika-style accordion cards) ── */}
+        <ServicesGrid onGetQuote={(serviceName) => openQuoteModal(serviceName as any)} />
         
         <div id="services-container">
           {SERVICES.map((service) => (
@@ -155,29 +174,32 @@ const App: React.FC = () => {
         <CTASection />
       </main>
 
-      <footer className="py-20 px-6 border-t border-white/5 glass relative overflow-hidden">
+      <footer className="py-20 px-6 border-t border-amber-500/10 bg-[#05050e] relative overflow-hidden">
+        {/* Subtle amber glow */}
+        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-[200px] bg-amber-500/[0.03] blur-[100px] rounded-full pointer-events-none" />
+
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center md:items-start gap-12 relative z-10">
           <div className="space-y-4 flex flex-col items-center md:items-start">
-            <div className="flex items-center gap-3">
-              {globalData?.logoUrl ? (
-                <img src={globalData.logoUrl} alt={globalData.siteName} className="h-10 w-auto" />
-              ) : (
-                <div className="w-8 h-8 bg-amber-500 rounded-lg flex items-center justify-center font-black text-white">M</div>
-              )}
-              <span className="font-black text-3xl tracking-tighter uppercase text-white leading-none">
-                {globalData?.siteName || BRAND_NAME}
-              </span>
-            </div>
+            {globalData?.logoUrl ? (
+              <img src={globalData.logoUrl} alt={globalData.siteName || BRAND_NAME} className="h-10 w-auto" />
+            ) : (
+              <MadsagLogo className="h-9 w-auto" />
+            )}
             <p className="text-amber-500 font-black text-[10px] uppercase tracking-[0.3em]">{SLOGAN}</p>
             {globalData?.footerText && (
                <p className="text-gray-500 text-xs font-medium max-w-sm">{globalData.footerText}</p>
+            )}
+            {globalData?.contactEmail && (
+              <a href={`mailto:${globalData.contactEmail}`} className="text-gray-400 hover:text-amber-400 text-xs font-medium transition-colors">
+                <i className="fa-solid fa-envelope mr-2 text-amber-500/50" />{globalData.contactEmail}
+              </a>
             )}
           </div>
           
           <div className="grid grid-cols-2 md:grid-cols-2 gap-12 w-full md:w-auto">
              <div className="space-y-4">
                <h4 className="text-white font-black text-xs uppercase tracking-widest text-center md:text-left">Navigation</h4>
-               <ul className="space-y-2 text-sm text-gray-500 font-bold text-center md:text-left">
+               <ul className="space-y-2.5 text-sm text-gray-500 font-bold text-center md:text-left">
                  <li><a href="#hero" className="hover:text-amber-400 transition-colors">Home</a></li>
                  <li><a href="#portfolio" className="hover:text-amber-400 transition-colors">Portfolio</a></li>
                  <li><a href="#process" className="hover:text-amber-400 transition-colors">Strategy</a></li>
@@ -185,18 +207,19 @@ const App: React.FC = () => {
                </ul>
              </div>
              <div className="space-y-4">
-               <h4 className="text-white font-black text-xs uppercase tracking-widest text-center md:text-left">Social</h4>
-               <div className="flex gap-4 justify-center md:justify-start">
-                 <a href="#" className="w-10 h-10 glass rounded-full flex items-center justify-center hover:bg-white/10 transition-all text-white"><i className="fa-brands fa-linkedin-in text-lg"></i></a>
-                 <a href="#" className="w-10 h-10 glass rounded-full flex items-center justify-center hover:bg-white/10 transition-all text-white"><i className="fa-brands fa-instagram text-lg"></i></a>
+               <h4 className="text-white font-black text-xs uppercase tracking-widest text-center md:text-left">Connect</h4>
+               <div className="flex gap-3 justify-center md:justify-start">
+                 <a href="https://linkedin.com/company/madsag" target="_blank" rel="noopener" className="w-9 h-9 bg-white/5 border border-white/10 hover:border-amber-500/30 hover:bg-amber-500/10 rounded-xl flex items-center justify-center transition-all text-gray-400 hover:text-amber-400"><i className="fa-brands fa-linkedin-in text-sm"></i></a>
+                 <a href="https://instagram.com/madsag.agency" target="_blank" rel="noopener" className="w-9 h-9 bg-white/5 border border-white/10 hover:border-amber-500/30 hover:bg-amber-500/10 rounded-xl flex items-center justify-center transition-all text-gray-400 hover:text-amber-400"><i className="fa-brands fa-instagram text-sm"></i></a>
+                 <a href="https://wa.me/919896336357" target="_blank" rel="noopener" className="w-9 h-9 bg-white/5 border border-white/10 hover:border-amber-500/30 hover:bg-amber-500/10 rounded-xl flex items-center justify-center transition-all text-gray-400 hover:text-amber-400"><i className="fa-brands fa-whatsapp text-sm"></i></a>
                </div>
              </div>
           </div>
         </div>
 
         <div className="max-w-6xl mx-auto mt-16 pt-8 border-t border-white/5 flex flex-col sm:flex-row justify-between items-center gap-4 text-[10px] font-bold text-gray-600 uppercase tracking-widest text-center sm:text-left">
-          <p>&copy; {new Date().getFullYear()} {globalData?.siteName || BRAND_NAME} STRATEGY GROUP.</p>
-          <p>Global Digital Infrastructure v1.1</p>
+          <p>&copy; {new Date().getFullYear()} {globalData?.siteName || BRAND_NAME}. All rights reserved.</p>
+          <p className="text-amber-500/30">Engineering Market Dominance</p>
         </div>
       </footer>
 

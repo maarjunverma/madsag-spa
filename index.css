@@ -3,86 +3,235 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    --color-brand: #f59e0b;
+    --color-brand-light: #fcd34d;
+    --color-brand-dark: #d97706;
+    --color-bg: #030712;
+    --color-surface: #080810;
+    --color-surface-2: #0d0d1a;
+  }
+
+  /* ── Smooth Scrolling ── */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+
   body {
-    @apply bg-[#030712] text-[#f9fafb] antialiased overflow-x-hidden;
-    font-family: 'Poppins', sans-serif;
+    @apply antialiased overflow-x-hidden;
+    background-color: var(--color-bg);
+    color: #f9fafb;
+    font-family: 'Poppins', system-ui, sans-serif;
+  }
+
+  ::selection {
+    background-color: rgba(245, 158, 11, 0.3);
+    color: #fff;
+  }
+
+  ::-webkit-scrollbar {
+    width: 4px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #030712;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: rgba(245, 158, 11, 0.3);
+    border-radius: 4px;
   }
 }
 
 @layer components {
+  /* ── Glassmorphism ── */
   .glass {
-    @apply bg-gray-900/70 border border-white/10 backdrop-blur-xl;
+    @apply bg-gray-900/60 border border-white/[0.08] backdrop-blur-xl;
   }
 
+  .glass-amber {
+    background: rgba(245, 158, 11, 0.05);
+    border: 1px solid rgba(245, 158, 11, 0.15);
+    backdrop-filter: blur(20px);
+  }
+
+  /* ── Gold Gradient Text ── */
   .text-gold {
-    background: linear-gradient(135deg, #fcd34d 0%, #d97706 100%);
+    background: linear-gradient(135deg, #fcd34d 0%, #f59e0b 50%, #d97706 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+    background-clip: text;
   }
 
-  .no-scrollbar::-webkit-scrollbar {
-    display: none;
+  /* ── Amber Glow Button ── */
+  .btn-amber {
+    @apply bg-amber-500 hover:bg-amber-400 text-black font-black uppercase tracking-widest transition-all active:scale-95;
+    box-shadow: 0 0 24px rgba(245, 158, 11, 0.25), 0 4px 12px rgba(0,0,0,0.4);
   }
-  
-  .no-scrollbar {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
+  .btn-amber:hover {
+    box-shadow: 0 0 32px rgba(245, 158, 11, 0.4), 0 4px 16px rgba(0,0,0,0.5);
   }
 
-  /* Refined Form Styles - Increased border visibility as requested */
+  /* ── Input Styles ── */
   .input-glow {
-    @apply transition-all duration-300 border-white/20 bg-[#0a0a0f]/90;
+    @apply w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 text-white placeholder-gray-600 text-sm font-medium outline-none transition-all duration-200;
   }
-  
+  .input-glow:hover {
+    @apply border-amber-500/20;
+  }
   .input-glow:focus {
-    @apply border-amber-500/60 ring-4 ring-amber-500/10 shadow-[0_0_20px_rgba(245,158,11,0.1)];
+    @apply border-amber-500/60;
+    box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.1);
   }
 
-  .input-glow:hover:not(:focus) {
-    @apply border-white/30;
+  /* ── Section Card ── */
+  .card {
+    @apply bg-white/[0.03] border border-white/[0.08] rounded-2xl;
+    background: linear-gradient(135deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%);
   }
+
+  /* ── No Scrollbar ── */
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+  .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 }
 
-/* Custom Design System Animations */
+/* ══════════════════════════════════════════════════════════
+   SCROLL-REVEAL ANIMATIONS
+   Elements start hidden and animate in when they enter the viewport.
+   Apply .reveal (+ optional variant) to any element, then trigger
+   by adding .revealed via IntersectionObserver.
+   ══════════════════════════════════════════════════════════ */
+
+/* Base reveal state — hidden, translated, will-change optimised */
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition:
+    opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+/* Directional variants */
+.reveal-left {
+  opacity: 0;
+  transform: translateX(-50px);
+  transition:
+    opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+.reveal-right {
+  opacity: 0;
+  transform: translateX(50px);
+  transition:
+    opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+.reveal-scale {
+  opacity: 0;
+  transform: scale(0.92);
+  transition:
+    opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+/* Triggered state — everything snaps into place */
+.revealed,
+.reveal-left.revealed,
+.reveal-right.revealed,
+.reveal-scale.revealed {
+  opacity: 1;
+  transform: translateY(0) translateX(0) scale(1);
+}
+
+/* Stagger delays for child items (grid cards, list items, etc.) */
+.stagger-1 { transition-delay: 0.08s; }
+.stagger-2 { transition-delay: 0.16s; }
+.stagger-3 { transition-delay: 0.24s; }
+.stagger-4 { transition-delay: 0.32s; }
+.stagger-5 { transition-delay: 0.40s; }
+.stagger-6 { transition-delay: 0.48s; }
+
+
+/* ══════════════════════════════════════════════════════════
+   EXISTING KEYFRAME ANIMATIONS
+   ══════════════════════════════════════════════════════════ */
+
 @keyframes gentle-bounce {
   0%, 100% { transform: translateY(0) scale(1); }
   50% { transform: translateY(-6px) scale(1.1); }
 }
-
 .animate-gentle-bounce {
   animation: gentle-bounce 3s infinite ease-in-out;
 }
 
 @keyframes modal-enter {
-  from { opacity: 0; transform: translateY(40px) scale(0.98); }
-  to { opacity: 1; transform: translateY(0) scale(1); }
+  from { opacity: 0; transform: translateY(32px) scale(0.98); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
 }
-
 .animate-modal-enter {
-  animation: modal-enter 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: modal-enter 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 @keyframes backdrop-fade {
   from { opacity: 0; }
-  to { opacity: 1; }
+  to   { opacity: 1; }
 }
-
 .animate-backdrop-fade {
-  animation: backdrop-fade 0.4s ease-out forwards;
+  animation: backdrop-fade 0.35s ease-out forwards;
 }
 
 @keyframes spin-slow {
   from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  to   { transform: rotate(360deg); }
 }
-
 .animate-spin-slow {
   animation: spin-slow 2s linear infinite;
 }
 
-/* Mobile-Specific Refinements for 480px range */
+@keyframes float-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.animate-float-up {
+  animation: float-up 0.6s ease-out forwards;
+}
+
+/* ── Amber pulsing border ── */
+@keyframes amber-pulse-border {
+  0%, 100% { border-color: rgba(245, 158, 11, 0.2); }
+  50%       { border-color: rgba(245, 158, 11, 0.5); }
+}
+.pulse-border {
+  animation: amber-pulse-border 2.5s ease-in-out infinite;
+}
+
+/* ══════════════════════════════════════════════════════════
+   ACCESSIBILITY — Respect reduced motion preference
+   ══════════════════════════════════════════════════════════ */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .reveal, .reveal-left, .reveal-right, .reveal-scale {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .animate-gentle-bounce,
+  .animate-float-up,
+  .pulse-border {
+    animation: none;
+  }
+}
+
+/* ── Mobile Refinements ── */
 @media (max-width: 480px) {
-  h1 { @apply text-3xl !important; }
-  h2 { @apply text-2xl !important; }
-  .section-padding { @apply py-12 px-4 !important; }
+  h1 { font-size: 2rem !important; }
+  h2 { font-size: 1.6rem !important; }
 }
