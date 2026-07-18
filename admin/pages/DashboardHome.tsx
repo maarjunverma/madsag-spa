@@ -2,6 +2,8 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { adminApi } from '../../services/adminApi';
+import { STRAPI_URL } from '../../constants';
+
 
 interface DashboardHomeProps {
   token: string;
@@ -79,7 +81,17 @@ const DashboardHome: React.FC<DashboardHomeProps> = ({ token }) => {
       <div className="bg-amber-500/5 border border-amber-500/15 rounded-2xl p-5 flex items-start gap-4">
         <i className="fa-solid fa-circle-info text-amber-400 mt-0.5" />
         <div>
-          <p className="text-amber-400 font-bold text-sm mb-1">Connected to <code className="font-mono text-xs bg-amber-500/10 px-1.5 py-0.5 rounded">api.madsag.in</code></p>
+          <p className="text-amber-400 font-bold text-sm mb-1">
+            Connected to <code className="font-mono text-xs bg-amber-500/10 px-1.5 py-0.5 rounded">
+              {(() => {
+                try {
+                  return new URL(STRAPI_URL).hostname;
+                } catch {
+                  return STRAPI_URL.replace(/https?:\/\//, '').split('/')[0];
+                }
+              })()}
+            </code>
+          </p>
           <p className="text-amber-500/60 text-xs font-medium leading-relaxed">
             Content you publish here will automatically appear on the live site. Blog posts and portfolio items are served dynamically from Strapi.
           </p>

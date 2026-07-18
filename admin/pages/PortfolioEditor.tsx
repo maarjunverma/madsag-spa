@@ -3,6 +3,8 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { adminApi } from '../../services/adminApi';
 import { PortfolioItem } from '../../types';
+import { STRAPI_URL } from '../../constants';
+
 
 interface PortfolioEditorProps {
   token: string;
@@ -190,8 +192,15 @@ const PortfolioEditor: React.FC<PortfolioEditorProps> = ({ token }) => {
         <div className="bg-amber-500/5 border border-amber-500/15 rounded-2xl p-5">
           <p className="text-amber-500/70 text-xs font-medium leading-relaxed">
             <i className="fa-solid fa-image text-amber-400 mr-2" />
-            To attach images, upload them directly in the <strong className="text-amber-400">Strapi Media Library</strong> and link them to this entry via the Strapi admin at <code className="font-mono bg-amber-500/10 px-1.5 py-0.5 rounded text-[10px]">api.madsag.in/admin</code>.
+            To attach images, upload them directly in the <strong className="text-amber-400">Strapi Media Library</strong> and link them to this entry via the Strapi admin at <a href={`${STRAPI_URL.endsWith('/') ? STRAPI_URL : STRAPI_URL + '/'}admin`} target="_blank" rel="noopener noreferrer" className="font-mono bg-amber-500/10 px-1.5 py-0.5 rounded text-[10px] text-amber-400 hover:underline">{(() => {
+              try {
+                return new URL(STRAPI_URL).hostname;
+              } catch {
+                return STRAPI_URL.replace(/https?:\/\//, '').split('/')[0];
+              }
+            })()}/admin</a>.
           </p>
+
         </div>
       </form>
     </div>
