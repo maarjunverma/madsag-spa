@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Link } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import ServiceSection from './components/ServiceSection';
@@ -17,6 +17,7 @@ import BlogModal from './components/BlogModal';
 import ServiceDetailView from './components/ServiceDetailView';
 import MadsagLogo from './components/MadsagLogo';
 import ServicesGrid from './components/ServicesGrid';
+import AboutPage from './components/AboutPage';
 import AdminApp from './admin/AdminApp';
 import { SERVICES, BRAND_NAME, SLOGAN } from './constants';
 import { ServiceType, PortfolioItem, BlogPost, Service, GlobalData } from './types';
@@ -28,8 +29,41 @@ const App: React.FC = () => {
   return (
     <Routes>
       <Route path="/admin/*" element={<AdminApp />} />
+      <Route path="/about" element={<AboutRoute />} />
       <Route path="/*" element={<PublicSite />} />
     </Routes>
+  );
+};
+
+const AboutRoute: React.FC = () => {
+  const [isQuoteModalOpen, setIsQuoteModalOpen] = useState(false);
+  const [globalData, setGlobalData] = useState<GlobalData | null>(null);
+
+  useEffect(() => {
+    const fetchGlobal = async () => {
+      const data = await apiService.getGlobalData();
+      if (data) setGlobalData(data);
+    };
+    fetchGlobal();
+    window.scrollTo(0, 0);
+  }, []);
+
+  const openQuote = () => {
+    setIsQuoteModalOpen(true);
+    document.body.style.overflow = 'hidden';
+  };
+  const closeQuote = () => {
+    setIsQuoteModalOpen(false);
+    document.body.style.overflow = 'auto';
+  };
+
+  return (
+    <div className="relative bg-[#030712]">
+      <Navbar onGetQuote={openQuote} activeSectionId={null} globalData={globalData} />
+      <AboutPage onGetQuote={openQuote} />
+      <WhatsAppButton activeSection={null} />
+      <QuoteModal isOpen={isQuoteModalOpen} onClose={closeQuote} preselectedService="" preselectedPlan="" />
+    </div>
   );
 };
 
@@ -204,6 +238,7 @@ const PublicSite: React.FC = () => {
                  <li><a href="#portfolio" className="hover:text-amber-400 transition-colors">Portfolio</a></li>
                  <li><a href="#process" className="hover:text-amber-400 transition-colors">Strategy</a></li>
                  <li><a href="#blog" className="hover:text-amber-400 transition-colors">Journal</a></li>
+                 <li><Link to="/about" className="hover:text-amber-400 transition-colors">About Us</Link></li>
                </ul>
              </div>
              <div className="space-y-4">

@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { BRAND_NAME } from '../constants';
 import { GlobalData } from '../types';
 import MadsagLogo from './MadsagLogo';
@@ -73,6 +74,12 @@ const Navbar: React.FC<NavbarProps> = ({ onGetQuote, activeSectionId, globalData
               )}
             </a>
           ))}
+          <Link
+            to="/about"
+            className="relative py-2 transition-all font-bold uppercase text-[15px] tracking-[0.2em] text-gray-400 hover:text-amber-400"
+          >
+            About Us
+          </Link>
         </div>
 
         <div className="flex items-center gap-4">
@@ -118,6 +125,13 @@ const Navbar: React.FC<NavbarProps> = ({ onGetQuote, activeSectionId, globalData
               {link.label}
             </a>
           ))}
+          <Link
+            to="/about"
+            onClick={() => setIsMenuOpen(false)}
+            className="text-2xl font-black uppercase tracking-[0.2em] text-white hover:text-amber-400 transition-all"
+          >
+            About Us
+          </Link>
           <button
             onClick={() => {
               setIsMenuOpen(false);
