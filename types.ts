@@ -63,6 +63,7 @@ export interface Service {
   description: string;
   fullDescription: string;
   icon: string;
+  image?: string;
   features: string[];
   gradient: string;
   roadmap: RoadmapItem[];

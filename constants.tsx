@@ -163,6 +163,7 @@ export const SERVICES: Service[] = [
     description: 'We don\'t build sites; we architect digital flagships. Our design language balances brutalist efficiency with luxury aesthetics.',
     fullDescription: 'Our Web Architecture unit focuses on high-performance frameworks that deliver sub-second load times while maintaining a level of aesthetic mastery that builds instant trust.',
     icon: 'fa-solid fa-compass-drafting',
+    image: '/service-website-design.png',
     features: ['Bespoke UI/UX Frameworks', 'Sub-Second Page Loads', 'Conversion-First Architecture', 'Retina-Optimized Assets'],
     gradient: 'from-amber-600 to-yellow-800',
     stats: [
@@ -183,6 +184,7 @@ export const SERVICES: Service[] = [
     description: 'Precision-targeted campaigns that dominate search and social. We don\'t just buy ads; we buy growth.',
     fullDescription: 'Performance Marketing at MADSAG is a data-driven engine. We utilize high-frequency creative testing and the Meta Conversions API.',
     icon: 'fa-solid fa-chart-line',
+    image: '/service-performance-marketing.png',
     features: ['Direct ROI Focus', 'Omnichannel Mastery', 'Deep Data Analysis', 'Creative Scaling'],
     gradient: 'from-orange-600 to-red-800',
     stats: [
@@ -228,6 +230,7 @@ export const SERVICES: Service[] = [
     description: 'Laser-focused funnels engineered with one mission: converting your traffic into revenue at record speeds.',
     fullDescription: 'Our funnels are built on the principles of direct-response psychology. Every decision is calculated to move the user toward a single objective.',
     icon: 'fa-solid fa-rocket',
+    image: '/service-landing-page.png',
     features: ['Psychological Copywriting', 'Sub-Second Loading', 'A/B Variant Testing', 'Clarity Optimization'],
     gradient: 'from-yellow-600 to-amber-800',
     stats: [
@@ -247,6 +250,7 @@ export const SERVICES: Service[] = [
     description: 'Bespoke Shopify experiences that combine the beauty of a luxury brand with the power of modern e-commerce.',
     fullDescription: 'We specialize in custom Shopify Liquid logic and Hydrogen (Headless) environments.',
     icon: 'fa-brands fa-shopify',
+    image: '/service-shopify.png',
     features: ['Custom Liquid Engines', 'Retention Funnels', 'Ecosystem Integration', 'Inventory Intelligence'],
     gradient: 'from-amber-700 to-yellow-900',
     stats: [

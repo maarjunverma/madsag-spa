@@ -58,16 +58,40 @@ const ServiceSection: React.FC<ServiceSectionProps> = ({ service, isActive, onEn
         
         <div className="order-1 lg:order-2 relative group cursor-pointer" onClick={() => onViewDetails(service)}>
           <div className={`absolute -inset-4 bg-gradient-to-r ${service.gradient} opacity-10 blur-3xl group-hover:opacity-20 transition-opacity`}></div>
-          <div className="relative glass rounded-3xl overflow-hidden shadow-2xl aspect-[4/3] md:aspect-square flex items-center justify-center border-white/5 group-hover:border-amber-500/30 transition-all">
-            <div className="text-center p-8 w-full h-full relative">
-               <img src={`https://picsum.photos/seed/${service.id}/1200/1200`} className="absolute inset-0 w-full h-full object-cover opacity-20 mix-blend-overlay group-hover:scale-110 transition-transform duration-1000" alt={service.name} />
-               <div className="relative z-10 flex flex-col items-center justify-center h-full">
+          <div className="relative glass rounded-3xl overflow-hidden shadow-2xl aspect-[4/3] md:aspect-square border-white/5 group-hover:border-amber-500/30 transition-all duration-500">
+            {service.image ? (
+              <>
+                {/* Service image — full bleed, cinematic treatment */}
+                <img
+                  src={service.image}
+                  alt={service.name}
+                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 ease-out group-hover:scale-105"
+                />
+                {/* Dark vignette overlay — keeps dark theme feel */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/10" />
+                <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-transparent to-transparent" />
+                {/* Bottom label */}
+                <div className="absolute bottom-0 left-0 right-0 p-6 flex items-end justify-between">
+                  <div>
+                    <p className="text-[8px] md:text-[10px] uppercase tracking-[0.4em] text-amber-400 font-black mb-1">Strategic Pipeline</p>
+                    <p className="text-white font-black text-sm md:text-base uppercase tracking-tight leading-none">{service.name}</p>
+                  </div>
+                  <div className="w-10 h-10 glass rounded-full flex items-center justify-center border-white/20 group-hover:border-amber-500/60 group-hover:scale-110 transition-all">
+                    <i className="fa-solid fa-arrow-right text-white text-sm group-hover:text-amber-400 transition-colors"></i>
+                  </div>
+                </div>
+              </>
+            ) : (
+              <div className="text-center p-8 w-full h-full relative flex items-center justify-center">
+                <img src={`https://picsum.photos/seed/${service.id}/1200/1200`} className="absolute inset-0 w-full h-full object-cover opacity-20 mix-blend-overlay group-hover:scale-110 transition-transform duration-1000" alt={service.name} />
+                <div className="relative z-10 flex flex-col items-center justify-center h-full">
                   <div className="w-16 h-16 md:w-20 md:h-20 glass rounded-full flex items-center justify-center mb-6 border-white/20 group-hover:scale-110 transition-transform">
                     <i className="fa-solid fa-maximize text-white text-lg md:text-xl"></i>
                   </div>
                   <p className="text-[8px] md:text-[10px] uppercase tracking-[0.4em] text-amber-400 font-black">Strategic Pipeline Deep Dive</p>
-               </div>
-            </div>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>
