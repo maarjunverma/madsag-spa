@@ -18,6 +18,7 @@ import ServiceDetailView from './components/ServiceDetailView';
 import MadsagLogo from './components/MadsagLogo';
 import ServicesGrid from './components/ServicesGrid';
 import AboutPage from './components/AboutPage';
+import WordPressPage from './components/WordPressPage';
 import AdminApp from './admin/AdminApp';
 import { SERVICES, BRAND_NAME, SLOGAN } from './constants';
 import { ServiceType, PortfolioItem, BlogPost, Service, GlobalData } from './types';
@@ -30,6 +31,7 @@ const App: React.FC = () => {
     <Routes>
       <Route path="/admin/*" element={<AdminApp />} />
       <Route path="/about" element={<AboutRoute />} />
+      <Route path="/services/wordpress" element={<WordPressRoute />} />
       <Route path="/*" element={<PublicSite />} />
     </Routes>
   );
@@ -63,6 +65,37 @@ const AboutRoute: React.FC = () => {
       <AboutPage onGetQuote={openQuote} />
       <WhatsAppButton activeSection={null} />
       <QuoteModal isOpen={isQuoteModalOpen} onClose={closeQuote} preselectedService="" preselectedPlan="" />
+    </div>
+  );
+};
+
+const WordPressRoute: React.FC = () => {
+  const [isQuoteModalOpen, setIsQuoteModalOpen] = useState(false);
+  const [globalData, setGlobalData] = useState<GlobalData | null>(null);
+
+  useEffect(() => {
+    const fetchGlobal = async () => {
+      const data = await apiService.getGlobalData();
+      if (data) setGlobalData(data);
+    };
+    fetchGlobal();
+  }, []);
+
+  const openQuote = () => {
+    setIsQuoteModalOpen(true);
+    document.body.style.overflow = 'hidden';
+  };
+  const closeQuote = () => {
+    setIsQuoteModalOpen(false);
+    document.body.style.overflow = 'auto';
+  };
+
+  return (
+    <div className="relative bg-[#030712]">
+      <Navbar onGetQuote={openQuote} activeSectionId={null} globalData={globalData} />
+      <WordPressPage onGetQuote={openQuote} />
+      <WhatsAppButton activeSection={null} />
+      <QuoteModal isOpen={isQuoteModalOpen} onClose={closeQuote} preselectedService="Website Design" preselectedPlan="" />
     </div>
   );
 };

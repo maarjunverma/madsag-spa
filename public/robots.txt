@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# Block admin panel from being indexed
+Disallow: /admin/
+Disallow: /admin
+
+Sitemap: https://madsag.in/sitemap.xml
