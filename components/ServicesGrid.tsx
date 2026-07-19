@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 interface ServiceCardData {
   id: string;
@@ -235,8 +236,8 @@ const ServiceCard: React.FC<{ service: ServiceCardData; onGetQuote: (s: string) 
             ))}
           </div>
 
-          {/* CTA Button */}
-          <div className="ml-16">
+          {/* CTA Buttons */}
+          <div className="ml-16 flex flex-wrap gap-3">
             <button
               onClick={() => onGetQuote(service.title)}
               className="inline-flex items-center gap-2.5 px-6 py-3 bg-amber-500 hover:bg-amber-400 text-black font-black text-[10px] uppercase tracking-[0.25em] rounded-xl transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] shadow-[0_0_20px_rgba(245,158,11,0.2)]"
@@ -247,6 +248,13 @@ const ServiceCard: React.FC<{ service: ServiceCardData; onGetQuote: (s: string) 
                 <polyline points="12 5 19 12 12 19"/>
               </svg>
             </button>
+            <Link
+              to={`/services/${service.id}`}
+              className="inline-flex items-center gap-2 px-6 py-3 border border-white/10 hover:border-amber-500/30 bg-white/[0.03] hover:bg-white/[0.07] text-gray-400 hover:text-amber-400 font-black text-[10px] uppercase tracking-[0.2em] rounded-xl transition-all duration-200"
+            >
+              View Details
+              <i className="fa-solid fa-arrow-up-right-from-square text-[9px]" />
+            </Link>
           </div>
         </div>
       </div>

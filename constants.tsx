@@ -289,10 +289,33 @@ export const PROCESS_STEPS: ProcessStep[] = [
 ];
 
 export const TECH_STACK = [
-  { name: 'Next.js', icon: 'fa-solid fa-n', color: 'text-white' },
-  { name: 'React.js', icon: 'fa-brands fa-react', color: 'text-cyan-400' },
-  { name: 'Node.js', icon: 'fa-brands fa-node-js', color: 'text-green-500' },
-  { name: 'WordPress', icon: 'fa-brands fa-wordpress', color: 'text-blue-500' },
-  { name: 'Tailwind', icon: 'fa-solid fa-wind', color: 'text-teal-400' },
-  { name: 'Shopify', icon: 'fa-brands fa-shopify', color: 'text-emerald-500' }
+  // ── FRONTEND ──
+  { name: 'HTML5',       icon: 'fa-brands fa-html5',      color: 'text-orange-500',  category: 'Frontend' },
+  { name: 'CSS3',        icon: 'fa-brands fa-css3-alt',   color: 'text-blue-500',    category: 'Frontend' },
+  { name: 'JavaScript',  icon: 'fa-brands fa-js',         color: 'text-yellow-400',  category: 'Frontend' },
+  { name: 'TypeScript',  icon: 'fa-solid fa-t',           color: 'text-blue-400',    category: 'Frontend' },
+  { name: 'React.js',    icon: 'fa-brands fa-react',      color: 'text-cyan-400',    category: 'Frontend' },
+  { name: 'Next.js',     icon: 'fa-solid fa-n',           color: 'text-white',       category: 'Frontend' },
+  { name: 'Tailwind',    icon: 'fa-solid fa-wind',        color: 'text-teal-400',    category: 'Frontend' },
+  // ── BACKEND ──
+  { name: 'Node.js',     icon: 'fa-brands fa-node-js',    color: 'text-green-500',   category: 'Backend' },
+  { name: 'Python',      icon: 'fa-brands fa-python',     color: 'text-yellow-400',  category: 'Backend' },
+  { name: 'PHP',         icon: 'fa-brands fa-php',        color: 'text-indigo-400',  category: 'Backend' },
+  { name: 'GraphQL',     icon: 'fa-solid fa-diagram-project', color: 'text-pink-400',category: 'Backend' },
+  { name: 'REST APIs',   icon: 'fa-solid fa-plug',        color: 'text-amber-400',   category: 'Backend' },
+  // ── DATABASES ──
+  { name: 'PostgreSQL',  icon: 'fa-solid fa-database',    color: 'text-blue-400',    category: 'Databases' },
+  { name: 'MongoDB',     icon: 'fa-solid fa-leaf',        color: 'text-green-400',   category: 'Databases' },
+  { name: 'MySQL',       icon: 'fa-solid fa-server',      color: 'text-orange-400',  category: 'Databases' },
+  { name: 'Redis',       icon: 'fa-solid fa-bolt',        color: 'text-red-400',     category: 'Databases' },
+  { name: 'Supabase',    icon: 'fa-solid fa-s',           color: 'text-emerald-400', category: 'Databases' },
+  { name: 'Firebase',    icon: 'fa-solid fa-fire',        color: 'text-amber-500',   category: 'Databases' },
+  // ── PLATFORMS ──
+  { name: 'WordPress',   icon: 'fa-brands fa-wordpress',  color: 'text-blue-400',    category: 'Platforms' },
+  { name: 'Shopify',     icon: 'fa-brands fa-shopify',    color: 'text-emerald-500', category: 'Platforms' },
+  { name: 'AWS',         icon: 'fa-brands fa-aws',        color: 'text-amber-400',   category: 'Platforms' },
+  { name: 'Docker',      icon: 'fa-brands fa-docker',     color: 'text-blue-400',    category: 'Platforms' },
+  { name: 'GitHub',      icon: 'fa-brands fa-github',     color: 'text-white',       category: 'Platforms' },
+  { name: 'Vercel',      icon: 'fa-solid fa-triangle',    color: 'text-white',       category: 'Platforms' },
 ];
+

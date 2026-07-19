@@ -70,7 +70,7 @@ const AboutPage: React.FC<AboutPageProps> = ({ onGetQuote }) => {
     {
       icon: 'fa-solid fa-arrow-trend-up',
       title: 'We Build Solutions Made to Grow',
-      description: 'Your business will grow — and your digital systems should grow with it. We focus on scalable solutions that can support your future, not just solve today's problem.',
+      description: "Your business will grow — and your digital systems should grow with it. We focus on scalable solutions that can support your future, not just solve today's problem.",
     },
     {
       icon: 'fa-solid fa-layer-group',
@@ -104,12 +104,12 @@ const AboutPage: React.FC<AboutPageProps> = ({ onGetQuote }) => {
 
         <div className="max-w-5xl mx-auto relative z-10">
           {/* Badge */}
-          <div className="inline-flex items-center gap-2.5 px-4 py-2 mb-8 border border-amber-500/30 rounded-full bg-amber-500/5 text-amber-400 text-[9px] font-black tracking-[0.35em] uppercase">
+          <div className="inline-flex items-center gap-2.5 px-4 py-2 mb-8 border border-amber-500/30 rounded-full bg-amber-500/5 text-amber-400 text-[12px] font-black tracking-[0.35em] uppercase">
             <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
             About Madsag
           </div>
 
-          <h1 className="text-4xl md:text-7xl font-black uppercase tracking-tighter leading-[0.9] mb-8">
+          <h1 className="text-4xl md:text-6xl font-black uppercase  tracking-tighter leading-[0.9] mb-8">
             We Don't Just{' '}
             <span className="text-gold">Market</span>
             <br />
