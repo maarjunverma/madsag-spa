@@ -392,6 +392,7 @@ const QuoteModal: React.FC<QuoteModalProps> = ({ isOpen, onClose, preselectedSer
                       <i className="fa-solid fa-arrow-left" /> Back
                     </button>
                     <button
+                      id="quote-form-submit-btn"
                       type="submit"
                       disabled={status.loading || !canSubmit}
                       className="flex-[2] py-3.5 bg-amber-500 hover:bg-amber-400 disabled:opacity-40 disabled:cursor-not-allowed text-black font-black uppercase tracking-widest text-xs rounded-xl transition-all flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(245,158,11,0.3)]"
